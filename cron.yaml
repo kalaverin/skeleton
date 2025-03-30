@@ -1,0 +1,54 @@
+# defaults:
+#     environment:
+#       - key: PATH
+#         value: /bin:/usr/bin
+#     shell: /bin/bash
+#     utc: false
+
+# jobs:
+#  - name: aviation-import
+#    command: .venv/bin/python src/herald/loader.py
+#    schedule: "0 * * * *"
+#    concurrencyPolicy: Forbid
+
+#  - name: test-01
+#    enabled: false
+#    command: |
+#      echo "hello" 1>&2
+#      sleep 1
+#      exit 10
+#    schedule:
+#      minute: "*/10"
+#    captureStderr: true
+#    onFailure:
+#      retry:
+#        maximumRetries: 10
+#        initialDelay: 1
+#        maximumDelay: 30
+#        backoffMultiplier: 2
+#    onPermanentFailure:
+#      report:
+#        mail:
+#          from: example@foo.com
+#          to: example@bar.com
+#          smtpHost: 127.0.0.1
+
+# logging:
+#   # In the format of:
+#   # https://docs.python.org/3/library/logging.config.html#dictionary-schema-details
+#   version: 1
+#   disable_existing_loggers: false
+#   formatters:
+#     simple:
+#       format: '%(asctime)s [%(processName)s/%(threadName)s] %(levelname)s (%(name)s): %(message)s'
+#       datefmt: '%Y-%m-%d %H:%M:%S'
+#   handlers:
+#     console:
+#       class: logging.StreamHandler
+#       level: DEBUG
+#       formatter: simple
+#       stream: ext://sys.stdout
+#   root:
+#     level: INFO
+#     handlers:
+#       - console
