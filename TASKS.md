@@ -546,12 +546,12 @@ Environment: HTTP_PORT
 Build and run Docker container with the application.
 
 ```bash
-    docker build -f ci/Dockerfile -t blank/app . && \
+    docker build -f ci/Dockerfile -t Blank/app . && \
     docker run \
         --env-file .env \
         -e REDIS_HOST=172.17.0.1 \
         -p 127.0.0.1:$HTTP_PORT:80 \
-        -ti blank/app
+        -ti Blank/app
 ```
 
 
@@ -567,7 +567,7 @@ Run development server with verbose logging, auto-reload, and debug mode.
 
 ```bash
     uv run uvicorn main:App.Entrypoint \
-        --app-dir "src/blank/" \
+        --app-dir "src/Blank/" \
         --host "127.0.0.1" \
         --port "$HTTP_PORT" \
         --log-level debug \

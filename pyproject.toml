@@ -40,8 +40,8 @@ classifiers = [
 ]
 dependencies = [
 ]
-description = "Just blank"
-name = "blank"
+description = "Blank"
+name = "Blank"
 readme = "README.md"
 requires-python = ">=3.10,<3.12"
 version = "0.0.0"
@@ -60,7 +60,7 @@ extend = "ci/pyproject.toml"
 
 [tool.ruff.lint.isort]
 known-first-party = [
-  "blank"
+  "Blank"
 ]
 known-third-party = [
   "kalib"
