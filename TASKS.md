@@ -1,5 +1,8 @@
 # Tasks
 
+
+#### Most Common
+
 ## lint
 
 Requires: venv, update
@@ -98,8 +101,9 @@ Make virtualenv for project build & test tools, install pre-push hook.
 ```bash
     venv=${UV_PROJECT_ENVIRONMENT:-.venv}
     if [ ! -d "$venv" ]; then
-        uv venv
         uv sync --all-extras
+        uv lock --locked
+        uv venv --refresh
         uvx pre-commit install \
             --config ci/.pre-commit-config.yaml \
             --color always \
@@ -485,4 +489,147 @@ Run all tests with verbose output.
 
 ```bash
     uv run pytest -svx
+```
+
+
+#### Supervisor commands
+
+## start
+
+Run: once
+Requires: venv
+
+Run development server with verbose logging, auto-reload, and debug mode.
+
+```bash
+    zsh bin/supervisord.sh
+```
+
+## stop
+
+Run: once
+Requires: venv
+
+Shutdown Supervisor with all managed processes.
+
+```bash
+    uv run supervisorctl --configuration supervisord.conf shutdown || true
+```
+
+## tail
+
+Run: once
+
+```bash
+    tail --retry --sleep-interval=0.1 --follow log/*.log
+```
+
+
+#### Docker & Compose
+
+## compose
+
+Run: once
+Environment: HTTP_PORT
+
+Docker compose up.
+
+```bash
+    docker compose --env-file .env up --build
+```
+
+## dock
+
+Run: once
+Environment: HTTP_PORT
+
+Build and run Docker container with the application.
+
+```bash
+    docker build -f ci/Dockerfile -t blank/app . && \
+    docker run \
+        --env-file .env \
+        -e REDIS_HOST=172.17.0.1 \
+        -p 127.0.0.1:$HTTP_PORT:80 \
+        -ti blank/app
+```
+
+
+#### Web & SSH commands
+
+## develop
+
+Run: once
+Requires: venv
+Environment: HTTP_PORT
+
+Run development server with verbose logging, auto-reload, and debug mode.
+
+```bash
+    uv run uvicorn main:App.Entrypoint \
+        --app-dir "src/blank/" \
+        --host "127.0.0.1" \
+        --port "$HTTP_PORT" \
+        --log-level debug \
+        --env-file .env \
+        --use-colors \
+        --access-log \
+        --proxy-headers \
+        --no-server-header \
+        --date-header \
+        --reload
+```
+
+## tunnel
+
+Run: once
+Requires: venv
+Environment: HTTP_PORT, REMOTE_ADDR, REMOTE_PORT
+
+Attach local service to remote game-server via reverse ssh-tunnel.
+
+```bash
+    ssh \
+        -o CheckHostIP=no \
+        -o StrictHostKeyChecking=no \
+        -o UserKnownHostsFile=/dev/null \
+        -o ConnectTimeout=5 \
+        -o ConnectionAttempts=1 \
+        -TR $REMOTE_PORT:127.0.0.1:$HTTP_PORT $REMOTE_ADDR
+```
+
+## tunnel-test
+
+Run: once
+Environment: HTTP_PORT, REMOTE_ADDR, REMOTE_PORT
+
+```bash
+    ssh $REMOTE_ADDR "nc -vz 127.0.0.1 $REMOTE_PORT"
+    ssh $REMOTE_ADDR "[ ! -x .local/bin/http ] && pip install httpie; .local/bin/http --ignore-stdin get http://localhost:$REMOTE_PORT/version"
+```
+
+## cert
+
+Run: once
+
+Build and run Docker container with the application.
+
+```bash
+    cd ssl
+
+    cfssl gencert -initca ca-csr.json | cfssljson -bare ca
+
+    cfssl gencert \
+        -ca="ca.pem" \
+        -ca-key="ca-key.pem" \
+        -config="ca-config.json" \
+        server-csr.json \
+    | cfssljson -bare server
+
+    cfssl gencert \
+        -ca="ca.pem" \
+        -ca-key="ca-key.pem" \
+        -config="ca-config.json" \
+        server-csr.json \
+    | cfssljson -bare client
 ```
