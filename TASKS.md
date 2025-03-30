@@ -1,6 +1,5 @@
 # Tasks
 
-
 #### Most Common
 
 ## lint
@@ -491,7 +490,6 @@ Run all tests with verbose output.
     uv run pytest -svx
 ```
 
-
 #### Supervisor commands
 
 ## start
@@ -524,7 +522,6 @@ Run: once
     tail --retry --sleep-interval=0.1 --follow log/*.log
 ```
 
-
 #### Docker & Compose
 
 ## compose
@@ -553,7 +550,6 @@ Build and run Docker container with the application.
         -p 127.0.0.1:$HTTP_PORT:80 \
         -ti Blank/app
 ```
-
 
 #### Web & SSH commands
 
