@@ -10,10 +10,6 @@ default_language_version:
 fail_fast: false
 
 repos:
-  - repo: https://github.com/executablebooks/mdformat
-    rev: 0.7.22
-    hooks:
-      - id: mdformat
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
@@ -119,8 +115,11 @@ repos:
     rev: 0.2.1
     hooks:
       - id: radon
+        args:
+          - --warn-time=120
+          - --error-effort=2000
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.6.10
+    rev: 0.6.11
     hooks:
       - id: uv-lock
         args:
