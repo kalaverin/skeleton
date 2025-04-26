@@ -1,0 +1,17 @@
+[env]
+PROJECT_EXECUTE = "README.md"
+PROJECT_SECTION = "Tasks"
+_.python.venv = {path = ".venv", create = true}
+
+[hooks]
+enter = ["uv sync --all-extras"]
+postinstall = ["uv sync --all-extras --upgrade"]
+
+[settings]
+experimental = true
+python.compile = true
+python.uv_venv_auto = true
+
+[tools]
+ruff = "latest"
+uv = "latest"
