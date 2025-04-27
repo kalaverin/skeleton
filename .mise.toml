@@ -11,7 +11,3 @@ postinstall = ["uv sync --all-extras --upgrade"]
 experimental = true
 python.compile = true
 python.uv_venv_auto = true
-
-[tools]
-ruff = "latest"
-uv = "latest"
