@@ -46,14 +46,14 @@ version = "0.0.0"
 [project.urls]
 Homepage = "https://kalaver.in"
 
-[tool.black]
-extend = "ci/pyproject.toml"
+[tool]
+extend = "conf/tool.toml"
 
-[tool.mypy]
-ignore_missing_imports = true
-
-[tool.ruff]
-extend = "ci/pyproject.toml"
+[tool.refurb]
+ignore = [
+  149,
+  176
+]
 
 [tool.ruff.lint.isort]
 known-first-party = [
@@ -64,8 +64,7 @@ known-third-party = [
 ]
 
 [tool.setuptools]
-packages = [
-]
+packages = []
 
 [tool.setuptools.package-dir]
 "" = "src"
@@ -75,8 +74,6 @@ default-groups = [
   "dev",
   "docs"
 ]
-index-strategy = "unsafe-best-match"
-package = true
 
 [tool.yamlfix]
 line_length = 89
