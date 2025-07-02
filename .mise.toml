@@ -1,13 +1,20 @@
 [env]
-PROJECT_EXECUTE = "README.md"
-PROJECT_SECTION = "Tasks"
+BETTER_EXCEPTIONS = 1
+UV_COMPILE_BYTECODE=1
+UV_LINK_MODE="copy"
 _.python.venv = {path = ".venv", create = true}
 
 [hooks]
-postinstall = ["uv sync --all-extras --upgrade"]
+# enter = ["uv sync --all-extras"]
+# postinstall = ["uv sync --all-extras --upgrade"]
 
 [settings]
+env_file = '.env'
 experimental = true
 idiomatic_version_file_enable_tools = ["python"]
-python.compile = true
+python.compile = false
 python.uv_venv_auto = true
+
+# [tools]
+# ruff = "latest"
+# uv = "latest"

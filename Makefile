@@ -1,20 +1,79 @@
-# it's just wrapper around xc, but with some additional features
-#
-# home site  https://xcfile.dev
-# source     https://github.com/joerdav/xc
+env:
+	@mise install
+	@uv venv --refresh
+	@uv sync
+	@make freeze
 
-CONFIG := $(or $(EXECUTE_FILE), TASKS.md)
-XC := xc -file $(CONFIG)
-export XC
+freeze:
+	@uv pip list --format=json > packages.json
+	@uv pip compile \
+		--output-file packages.txt \
+		--generate-hashes pyproject.toml
 
-execute:  # deploy eXeCute tool (xc)
-	go install golang.org/dl/go1.22.6@latest && \
-	go install github.com/joerdav/xc/cmd/xc@latest
+check:
+	@uvx ruff check \
+		'contrib/' 'src/' 'tests/'
 
-#
+	@uvx black \
+		--check \
+		--diff \
+		'contrib/' 'src/' 'tests/'
 
-%: Makefile
-	@$(XC) $@
+	@uvx vulture \
+		--min-confidence 66 \
+		'contrib/' 'src/' 'tests/'
 
+	@uvx mypy \
+		--config-file etc/lint/mypy.toml \
+		'contrib/' 'src/' 'tests/'
 
-.DEFAULT_GOAL := publish
+	@uvx flakeheaven lint \
+		--config etc/lint/flakeheaven.toml \
+		'contrib/' 'src/' 'tests/'
+
+	@uvx bandit \
+		--quiet \
+		--recursive \
+		--severity-level all \
+		--confidence-level all \
+		--configfile pyproject.toml \
+		'contrib/' 'src/'
+
+	@uvx bandit \
+		--quiet \
+		--recursive \
+		--severity-level all \
+		--confidence-level all \
+		--configfile pyproject.toml \
+		--skip B101,B105,B106 \
+		'tests/'
+
+lint:
+	@uvx ruff check \
+		--fix \
+		'contrib' 'src/' 'tests/'
+
+	@uvx black 'contrib' 'src/' 'tests/'
+
+	@uvx yamlfix \
+		--exclude '.venv/' \
+		.
+
+	@uvx yamllint \
+		--format parsable \
+		--config-file etc/lint/yamllint.yaml \
+		.
+
+	@uvx pre-commit run \
+		--config etc/pre-commit.yaml \
+		--show-diff-on-failure \
+		--color always \
+		--all
+
+	@make check
+
+sync:
+	@mise sync python --uv
+	@make env
+
+.DEFAULT_GOAL := freeze

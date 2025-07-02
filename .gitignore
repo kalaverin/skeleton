@@ -2,6 +2,8 @@ __pycache__/
 *.py[cdo]
 .aider.*
 .python-version
+
+packages.json
 uv.lock
 
 log/
@@ -24,10 +26,11 @@ docs/_build/
 .vscode/
 *.code-workspace
 
-.mypy_cache/
-.ruff_cache/
-.pytest_cache/
 .flakeheaven_cache/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
 
-supervisord.pid
-supervisord.hist
+run/*.hist
+run/*.pid
+run/*.sock
