@@ -6,7 +6,7 @@ _.python.venv = {path = ".venv", create = true}
 
 [hooks]
 # enter = ["uv sync --all-extras"]
-# postinstall = ["uv sync --all-extras --upgrade"]
+postinstall = ["make sync"]
 
 [settings]
 env_file = '.env'

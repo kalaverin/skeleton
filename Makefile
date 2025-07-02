@@ -1,5 +1,8 @@
 env:
 	@mise install
+	@make sync
+
+sync:
 	@uv venv --refresh
 	@uv sync
 	@make freeze
@@ -71,9 +74,5 @@ lint:
 		--all
 
 	@make check
-
-sync:
-	@mise sync python --uv
-	@make env
 
 .DEFAULT_GOAL := freeze
