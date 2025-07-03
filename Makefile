@@ -10,7 +10,8 @@ freeze:
 	@uv pip list --format=json > packages.json
 	@uv pip compile \
 		--output-file packages.txt \
-		--generate-hashes pyproject.toml
+		--generate-hashes pyproject.toml \
+		--quiet
 
 check:
 	@uv run --quiet vulture \
