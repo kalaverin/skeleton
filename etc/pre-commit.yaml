@@ -45,7 +45,7 @@ repos:
       - id: fix-ligatures
       - id: forbid-bidi-controls
   - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
-    rev: v2.14.0
+    rev: v2.15.0
     hooks:
       - id: pretty-format-ini
         args:
@@ -108,7 +108,7 @@ repos:
       - id: python-check-blanket-noqa
       - id: python-check-blanket-type-ignore
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.11.13
+    rev: v0.12.1
     hooks:
       - id: ruff
         args:
@@ -155,7 +155,7 @@ repos:
           - --error-volume=3100
           - --error-difficulty=12
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.7.12
+    rev: 0.7.19
     hooks:
       - id: uv-lock
         args:
