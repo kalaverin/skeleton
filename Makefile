@@ -1,5 +1,5 @@
 env:
-	@mise install
+	@mise trust --yes .mise.toml && mise install
 
 sync:
 	@uv venv --refresh
@@ -7,6 +7,7 @@ sync:
 	@make freeze
 
 freeze:
+	@uv lock
 	@uv pip list --format=json > packages.json
 	@uv pip compile \
 		--output-file packages.txt \
@@ -74,5 +75,16 @@ lint:
 		--all
 
 	@make check
+
+upgrade:
+	@uv sync \
+		--upgrade \
+		--group development \
+		--group linting \
+		--group testing
+
+	@uv lock --upgrade
+	@make freeze
+	@uv pip list
 
 .DEFAULT_GOAL := freeze

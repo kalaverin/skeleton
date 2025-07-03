@@ -5,7 +5,6 @@ __pycache__/
 .python-version
 
 packages.json
-uv.lock
 
 log/
 run/

@@ -5,6 +5,7 @@ _.python.venv = {path = ".venv", create = true}
 # enter = ["uv sync --all-extras"]
 postinstall = [
   "cp -n .env.sample .env",
+  "eval \"$(mise activate)\"",
   "make sync",
   "uv run pre-commit install --hook-type pre-commit --hook-type pre-push --config etc/pre-commit.yaml"
 ]
