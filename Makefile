@@ -14,27 +14,27 @@ freeze:
 		--generate-hashes pyproject.toml
 
 check:
-	@uvx ruff check \
+	@uv run --quiet vulture \
+		--min-confidence 66 \
 		'contrib/' 'src/' 'tests/'
 
-	@uvx black \
+	@uv run --quiet black \
 		--check \
 		--diff \
 		'contrib/' 'src/' 'tests/'
 
-	@uvx vulture \
-		--min-confidence 66 \
-		'contrib/' 'src/' 'tests/'
-
-	@uvx mypy \
+	@uv run --quiet mypy \
 		--config-file etc/lint/mypy.toml \
 		'contrib/' 'src/' 'tests/'
 
-	@uvx flakeheaven lint \
+	@uv run --quiet flakeheaven lint \
 		--config etc/lint/flakeheaven.toml \
 		'contrib/' 'src/' 'tests/'
 
-	@uvx bandit \
+	@uv run --quiet ruff check \
+		'contrib/' 'src/' 'tests/'
+
+	@uv run --quiet bandit \
 		--quiet \
 		--recursive \
 		--severity-level all \
@@ -42,7 +42,7 @@ check:
 		--configfile pyproject.toml \
 		'contrib/' 'src/'
 
-	@uvx bandit \
+	@uv run --quiet bandit \
 		--quiet \
 		--recursive \
 		--severity-level all \
@@ -51,23 +51,23 @@ check:
 		--skip B101,B105,B106 \
 		'tests/'
 
-lint:
-	@uvx ruff check \
-		--fix \
-		'contrib' 'src/' 'tests/'
-
-	@uvx black 'contrib' 'src/' 'tests/'
-
-	@uvx yamlfix \
-		--exclude '.venv/' \
-		.
-
-	@uvx yamllint \
+	@uv run --quiet yamllint \
 		--format parsable \
 		--config-file etc/lint/yamllint.yaml \
 		.
 
-	@uvx pre-commit run \
+lint:
+	@uv run --quiet black 'contrib' 'src/' 'tests/'
+
+	@uv run --quiet ruff check \
+		--fix \
+		'contrib' 'src/' 'tests/'
+
+	@uv run --quiet yamlfix \
+		--exclude '.venv/' \
+		.
+
+	@uv run --quiet pre-commit run \
 		--config etc/pre-commit.yaml \
 		--show-diff-on-failure \
 		--color always \
