@@ -3,7 +3,10 @@
 
 **Version control** is handled using [Astral UV](https://docs.astral.sh/uv/getting-started/installation/#standalone-installer) tool. When building the image, uv is sourced from the official repository by copying the binary. Installation on a developer's machine can be done in various ways, which we'll cover shortly.
 
-**Managing the interpreter version**, project environment variables, and setting up the virtual environment is done with the [Mise](https://mise.jdx.dev/installing-mise.html) tool. It automatically install any interpreter version by reading it from the project description and/or the version bound by uv. It can also fetch the appropriate uv binary for the platform and architecture.
+**Managing the interpreter version**, project environment variables, and setting up the virtual environment is done with the [Mise](https://mise.jdx.dev/installing-mise.html) tool. It automatically install any interpreter version by reading it from the project description and/or the version bound by uv. It can also fetch the appropriate uv binary for the platform and architecture, for example:
+1. `mise install python@3.11`
+
+And this download, install python==3.11, and recreate virtual environment with all dependencies just by one command call!
 
 ## How to install required tools?
 
@@ -67,7 +70,7 @@ That's all, go to **Shell configuration** section.
    - `uv add phpbb<=1.2`
 
 3. Add some development library:
-   - `uv add --group development memtrace`
+   - `uv add --group development backyard-memleak`
 
 4. Work with locally cloned repository:
    - `uv add --editable ~/src/lib/chrome-v8-core`
