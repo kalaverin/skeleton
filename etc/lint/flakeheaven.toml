@@ -7,7 +7,7 @@ show_source = true
 
 [tool.flakeheaven.exceptions."docs/conf.py"]
 flake8-variables-names = [
-    "-VNE003"  # variable names that shadow builtins are not allowed
+  "-VNE003"  # variable names that shadow builtins are not allowed
 ]
 
 [tool.flakeheaven.plugins]

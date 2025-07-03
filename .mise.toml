@@ -1,12 +1,13 @@
 [env]
-BETTER_EXCEPTIONS = 1
-UV_COMPILE_BYTECODE=1
-UV_LINK_MODE="copy"
 _.python.venv = {path = ".venv", create = true}
 
 [hooks]
 # enter = ["uv sync --all-extras"]
-postinstall = ["make sync"]
+postinstall = [
+  "cp -n .env.sample .env",
+  "make sync",
+  "uv run pre-commit install --hook-type pre-commit --hook-type pre-push --config etc/pre-commit.yaml"
+]
 
 [settings]
 env_file = '.env'
