@@ -1,6 +1,5 @@
 env:
 	@mise install
-	@make sync
 
 sync:
 	@uv venv --refresh
