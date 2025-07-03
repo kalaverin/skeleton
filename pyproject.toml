@@ -149,9 +149,7 @@ packages = []
 
 [tool.uv]
 default-groups = [
-  "development",
-  "linting",
-  "testing"
+  "development"
 ]
 
 [tool.yamlfix]
