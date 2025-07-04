@@ -50,12 +50,12 @@ That's all, go to **Shell configuration** section.
 1. Go to project root.
 2. Just run `make env`:
    - mise will mark project directory as trusted
-   - mise copy sample developmnt environment variables to .env
+   - mise copy sample development environment variables to .env
    - mise grab environment variables defined in project .env, evaluate it and provide to current shell session
    - mise checks what project python versions is installed, otherwise download and install it
-   - mise make virtual environment in project root with uv
+   - uv make virtual environment in project root (`uv venv`)
    - uv read project packages list, download, install and link it (via `uv sync` run, read Makefile)
-   - mise install pre-commit and pre-push hooks
+   - uv install pre-commit and pre-push hooks
 
 ## Work with project
 
@@ -88,8 +88,8 @@ That's all, go to **Shell configuration** section.
 
 3. `make freeze`:
    - dump state to uv.lock by `uv lock`
-   - save all used packages in current virtual environment to `packages.json` (with all development packages!) by `uv pip list`
-   - save project dependencies to `packages.txt` with hashes for release builds strict version checks, read Dockerfile example (only project dependencies!) by `uv pip compile`
+   - for development and debugging puproses uv save all used packages in current virtual environment to `packages.json` (with all development packages!) by `uv pip list`
+   - for repeatable production purposes uv save project dependencies to `packages.txt` with hashes for release builds strict version checks, read Dockerfile example (only project dependencies!) by `uv pip compile`
 
 4. `make upgrade`:
    - read project dependencies graph from pyproject.toml
