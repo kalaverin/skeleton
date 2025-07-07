@@ -48,7 +48,7 @@ That's all, go to **Shell configuration** section.
 ### Kickstart
 
 1. Go to project root.
-2. Just run `make env`:
+2. Just run `make`:
    - mise will mark project directory as trusted
    - mise copy sample development environment variables to .env
    - mise grab environment variables defined in project .env, evaluate it and provide to current shell session
@@ -77,7 +77,7 @@ That's all, go to **Shell configuration** section.
 
 ### Common workflow
 
-1. `make env`:
+1. `make`:
    - same as `mise install`, but also call `mise trust --yes` for initial deployment
    - call `make sync`
 

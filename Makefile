@@ -1,4 +1,4 @@
-env:
+install:
 	@mise trust --yes .mise.toml && mise install
 
 sync:
@@ -87,4 +87,4 @@ upgrade:
 	@make freeze
 	@uv pip list
 
-.DEFAULT_GOAL := freeze
+.DEFAULT_GOAL := install
