@@ -1,3 +1,7 @@
+env:
+	@make install
+	@make sync
+
 install:
 	@mise trust --yes .mise.toml && mise install
 
