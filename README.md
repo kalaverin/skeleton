@@ -3,10 +3,7 @@
 
 **Version control** is handled using [Astral UV](https://docs.astral.sh/uv/getting-started/installation/#standalone-installer) tool. When building the image, uv is sourced from the official repository by copying the binary. Installation on a developer's machine can be done in various ways, which we'll cover shortly.
 
-**Managing the interpreter version**, project environment variables, and setting up the virtual environment is done with the [Mise](https://mise.jdx.dev/installing-mise.html) tool. It automatically install any interpreter version by reading it from the project description and/or the version bound by uv. It can also fetch the appropriate uv binary for the platform and architecture, for example:
-1. `mise install python@3.11`
-
-And this download, install python==3.11, and recreate virtual environment with all dependencies just by one command call!
+**Managing the interpreter version**, project environment variables, and setting up the virtual environment is done with the [Mise](https://mise.jdx.dev/installing-mise.html) tool. It automatically install any interpreter version by reading it from the project description and/or the version bound by uv. It can also fetch the appropriate uv binary for the platform and architecture.
 
 ## How to install required tools?
 
@@ -63,8 +60,10 @@ That's all, go to **Shell configuration** section.
 
 **NEVER CALL pip, NEVER!** Instead it use native uv calls, [read uv manual](https://docs.astral.sh/uv/guides/projects/#managing-dependencies), it's very easy, for example:
 
-1. Set or change python version:
+1. Set or change python version (when python 3.11 already installed):
    - `uv python pin 3.11`
+
+2. If python 3.11 isn't installed, run `mise install python@3.11` and mise download and install python 3.11, recreate virtual environment with 3.11 context. Do not forget to pin python version by uv from previous step (and, may be you need to update your pyproject.toml).
 
 2. Just add new dependency:
    - `uv add phpbb<=1.2`
