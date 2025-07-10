@@ -61,7 +61,7 @@ That's all, go to **Shell configuration** section.
 **NEVER CALL pip, NEVER!** Instead it use native uv calls, [read uv manual](https://docs.astral.sh/uv/guides/projects/#managing-dependencies), it's very easy, for example:
 
 1. Set or change python version (when python 3.11 already installed):
-   - `uv python pin 3.11`
+   - `uv python pin 3.11 && make sync`
 
 2. If python 3.11 isn't installed, run `mise install python@3.11` and mise download and install python 3.11, recreate virtual environment with 3.11 context. Do not forget to pin python version by uv from previous step (and, may be you need to update your pyproject.toml).
 
