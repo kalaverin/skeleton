@@ -19,6 +19,8 @@ freeze:
 		--quiet
 
 check:
+	@uv sync --group linting
+
 	@uv run --quiet vulture \
 		--min-confidence 66 \
 		'contrib/' 'src/' 'tests/'
@@ -62,6 +64,8 @@ check:
 		.
 
 lint:
+	@uv sync --group linting
+
 	@uv run --quiet black 'contrib' 'src/' 'tests/'
 
 	@uv run --quiet ruff check \
