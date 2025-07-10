@@ -18,10 +18,9 @@ function is_started {
 
 builtin cd "$(dirname "$0")/../"
 if [ "$?" -eq 0 ]; then
-    # check if supervisord is already running
 
     local RUN="$PWD/run"
-    if [ ! -x "$RUN" ]; then
+    if [ ! -d "$RUN" ] || [ ! -x "$RUN" ]; then
         echo " == fail ($0): directory not found: '$RUN'"
         return 1
 
