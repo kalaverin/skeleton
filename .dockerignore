@@ -1,0 +1,12 @@
+*
+
+!app/
+
+!.python-version
+!entrypoint.sh
+!pyproject.toml
+!uv.lock
+
+**/__pycache__/
+**/*.pyc
+**/*.pyo

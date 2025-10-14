@@ -1,0 +1,114 @@
+{
+  "project_name": "Skeleton",
+  "languages": {
+    "Python": {
+      "tab_size": 4,
+      "language_servers": [
+        "basedpyright",
+        "ty",
+        "pylsp",
+        "ruff",
+        "!pyright",
+        "!pyflakes",
+        "..."
+      ],
+      "format_on_save": "off"
+    },
+    "JSONC": {
+      "tab_size": 2
+    },
+    "TOML": {
+      "tab_size": 2
+    },
+    "YAML": {
+      "tab_size": 2
+    },
+    "Make": {
+      "hard_tabs": true,
+      "tab_size": 2
+    }
+  },
+  "lsp": {
+    "basedpyright": {
+      "binary": {
+        "path": ".venv/bin/basedpyright-langserver",
+        "arguments": ["--stdio"]
+      },
+      "settings": {
+        "pythonVersion": "3.12",
+        "python": {
+          "pythonPath": ".venv/bin/python"
+        },
+        "basedpyright.analysis": {
+          "extraPaths": [],
+          "venvPath": "./.venv/",
+          "typeshedPath": "~/src/misc/typeshed/stubs",
+          "typeCheckingMode": "all",
+          "diagnosticMode": "workspace",
+          "inlayHints.callArgumentNames": true,
+          "diagnosticSeverityOverrides": {
+            "reportAny": false,
+            "reportCallInDefaultInitializer": true,
+            "reportDuplicateImport": true,
+            "reportExplicitAny": false,
+            "reportIgnoreCommentWithoutRule": true,
+            "reportImplicitAbstractClass": true,
+            "reportImplicitRelativeImport": true,
+            "reportImplicitStringConcatenation": false,
+            "reportIncompatibleVariableOverride": "warning",
+            "reportInvalidCast": true,
+            "reportMissingParameterType": true,
+            "reportMissingTypeStubs": "warning",
+            "reportPrivateLocalImportUsage": true,
+            "reportUnannotatedClassAttribute": true,
+            "reportUninitializedInstanceVariable": "information",
+            "reportUnknownArgumentType": false,
+            "reportUnknownMemberType": false,
+            "reportUnknownParameterType": false,
+            "reportUnknownVariableType": false,
+            "reportUnusedCallResult": false,
+            "reportUnusedImport": true,
+            "reportUnusedParameter": "warning",
+            "reportUnusedVariable": "warning"
+          },
+          "strictListInference": true,
+          "strictDictionaryInference": true,
+          "strictSetInference": true,
+          "analyzeUnannotatedFunctions": true,
+          "strictParameterNoneValue": true,
+          "strictGenericNarrowing": true,
+
+          "enableExperimentalFeatures": true,
+          "logLevel": "Information"
+        }
+      }
+    },
+    "pylsp": {
+      "binary": {
+        "path": ".venv/bin/pylsp",
+        "arguments": []
+      },
+      "settings": {
+        "pylsp": {
+          "plugins": {
+            "jedi": {
+              "extra_paths": []
+            }
+          }
+        }
+      }
+    },
+    "ruff": {
+      "binary": {
+        "path": ".venv/bin/ruff",
+        "arguments": ["server"]
+      }
+    },
+    "ty": {
+      "binary": {
+        "path": ".venv/bin/ty",
+        "arguments": ["server"]
+      }
+    }
+  }
+}

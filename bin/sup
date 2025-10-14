@@ -1,0 +1,46 @@
+#!/usr/bin/env zsh
+
+function is_started {
+    if [ ! -x "$1" ]; then
+        echo " == fail ($0): directory not found: '$1'"
+        return 1
+
+    elif [ -f "$1/supervisord.pid" ]; then
+        pid="$(pgrep -F "$1/supervisord.pid")"
+        if [ -n "$pid" ] && [ "$pid" -gt 0 ] && [ -S "$1/supervisord.sock" ]; then
+            # echo " ++ warn ($0): supervisord($pid) started (from $1/supervisord.pid)" >&2
+            return 0
+        fi
+        return 2
+    fi
+    return 3
+}
+
+builtin cd "$(dirname "$0")/../"
+if [ "$?" -eq 0 ]; then
+
+    local RUN="$PWD/run"
+    if [ ! -d "$RUN" ] || [ ! -x "$RUN" ]; then
+        echo " == fail ($0): directory not found: '$RUN'"
+        return 1
+
+    elif [ ! -x "$commands[uvx]" ]; then
+        echo " == fail ($0): uvx not found"
+        return 1
+    fi
+
+    if ! is_started "$RUN"; then
+        source "$(dirname "$0")/supervisord.zsh"
+    fi
+
+    if is_started "$RUN"; then
+        uvx \
+            --color always \
+            --no-progress \
+            --quiet \
+            --from supervisor \
+            supervisorctl \
+            --configuration "$PWD/etc/supervisord.conf" \
+                $*
+    fi
+fi
