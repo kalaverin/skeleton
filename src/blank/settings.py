@@ -88,7 +88,7 @@ def show_environment(config: Settings, regex: str | None = None) -> None:
 
 config: Settings = Settings()
 
-logging.setup(
+loggers.setup(
     level=config.log.level,
     textual=config.log.textual and config.debug,
 )
