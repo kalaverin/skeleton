@@ -3,7 +3,6 @@ build-backend = "setuptools.build_meta"
 requires = [
   "setuptools"
 ]
-
 [dependency-groups]
 build = [
   "setuptools"
@@ -12,7 +11,7 @@ development = [
   "async-asgi-testclient>=1.4.11",
   "bandit[toml]>=1.8.6",
   "basedmypy>=2.10.0",
-  "basedpyright>=1.31.7",
+  "basedpyright>=1.32.0",
   "better-exceptions>=0.3.3",
   "black>=25.9.0",
   "hexora>=0.2.0",
@@ -26,7 +25,6 @@ development = [
   "refurb>=2.2.0",
   "ruff>=0.14.1",
   "ty>=0.0.1a23",
-
   "typing-extensions>=4.15.0",
   "typing-inspection>=0.4.2",
   "vulture>=2.14",
@@ -54,6 +52,10 @@ classifiers = [
   "Operating System :: OS Independent"
 ]
 dependencies = [
+  "orjson>=3.11.3",
+  "pydantic>=2.12.3",
+  "pydantic-settings>=2.11.0",
+  "structlog>=25.4.0",
 ]
 description = "Blank"
 name = "Blank"
