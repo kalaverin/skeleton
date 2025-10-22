@@ -11,10 +11,11 @@ build = [
 development = [
   "async-asgi-testclient>=1.4.11",
   "bandit[toml]>=1.8.6",
-  "basedpyright>=1.31.6",
+  "basedmypy>=2.10.0",
+  "basedpyright>=1.31.7",
   "better-exceptions>=0.3.3",
   "black>=25.9.0",
-  "mypy>=1.18.2",
+  "hexora>=0.2.0",
   "pre-commit>=4.3.0",
   "pytest-asyncio>=1.2.0",
   "pytest-cov>=7.0.0",
@@ -23,12 +24,13 @@ development = [
   "pytest>=8.4.2",
   "python-lsp-server[all]>=1.13.1",
   "refurb>=2.2.0",
-  "ruff>=0.14.0",
-  "ty>=0.0.1a21",
+  "ruff>=0.14.1",
+  "ty>=0.0.1a23",
+
   "typing-extensions>=4.15.0",
   "typing-inspection>=0.4.2",
   "vulture>=2.14",
-  "yamlfix>=1.18.0",
+  "yamlfix>=1.19.0",
   "yamllint>=1.37.1"
 ]
 documentation = [
@@ -46,8 +48,6 @@ classifiers = [
   "Intended Audience :: Developers",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
   "License :: OSI Approved :: BSD License",
@@ -58,7 +58,7 @@ dependencies = [
 description = "Blank"
 name = "Blank"
 readme = "README.md"
-requires-python = ">=3.10,<3.14"
+requires-python = ">=3.12,<3.14"
 version = "0.0.0"
 
 [project.urls]

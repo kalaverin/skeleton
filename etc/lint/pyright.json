@@ -1,0 +1,54 @@
+{
+  "include": [
+    "../../app/",
+    "../../tests/"
+  ],
+  "exclude": [
+    "**/.*",
+    "**/__pycache__/"
+  ],
+  "ignore": [
+    "migrations/**"
+  ],
+  "executionEnvironments": [
+    {
+      "pythonVersion": "3.12",
+      "root": "../../"
+    }
+  ],
+  "pythonVersion": "3.12",
+  "typeCheckingMode": "recommended",
+  "reportConstantRedefinition": true,
+  "reportDuplicateImport": true,
+  "reportIgnoreCommentWithoutRule": true,
+  "reportImplicitAbstractClass": true,
+  "reportImplicitRelativeImport": true,
+  "reportInvalidCast": true,
+  "reportMissingImports": true,
+  "reportPrivateLocalImportUsage": true,
+  "reportPrivateUsage": true,
+  "reportUnannotatedClassAttribute": true,
+  "reportUnusedImport": true,
+  "reportUnusedParameter": true,
+  "reportUnreachable": true,
+  "reportUnusedVariable": true,
+  "reportIncompatibleVariableOverride": "information",
+  "reportMissingTypeStubs": "information",
+  "reportUninitializedInstanceVariable": "information",
+  "reportAny": false,
+  "reportExplicitAny": false,
+  "reportImplicitStringConcatenation": false,
+  "reportImportCycles": false,
+  "reportUnknownArgumentType": false,
+  "reportUnknownMemberType": false,
+  "reportUnknownParameterType": false,
+  "reportUnknownVariableType": false,
+  "reportUnusedCallResult": false,
+  "enableExperimentalFeatures": true,
+  "strictListInference": true,
+  "strictDictionaryInference": true,
+  "strictSetInference": true,
+  "analyzeUnannotatedFunctions": true,
+  "strictParameterNoneValue": true,
+  "strictGenericNarrowing": true
+}

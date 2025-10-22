@@ -12,10 +12,11 @@ ignore = [
   "FIX002",  # Line contains TODO, consider resolving the issue
   "TD003"  # Missing issue link for this TODO
 ]
+# we always enable all checks
 select = [
   "A",
   "B",
-  # "D",
+  # "D",  # disable docstring checks (it's also disable CPY+DOC)
   "E",
   "F",
   "G",
@@ -23,7 +24,6 @@ select = [
   "N",
   "Q",
   "S",
-  "W",
   "C4",
   "DJ",
   "EM",
@@ -40,8 +40,8 @@ select = [
   "BLE",
   "C90",
   "COM",
-  # "CPY",  # non usable without docstrings
-  # "DOC",  # non usable without docstrings
+  "CPY",
+  "DOC",
   "DTZ",
   "ERA",
   "EXE",
@@ -75,9 +75,7 @@ select = [
   "ASYNC"
 ]
 unfixable = [
-  "G004",  # Logging statement uses f-string
-  "ERA001",  # Found commented-out code
-  "RUF012"  # loop: linter want this, but after use NOQA mark - fixer remove mark
+  "ERA001"  # do not autoremove commented code!
 ]
 
 [lint.flake8-annotations]

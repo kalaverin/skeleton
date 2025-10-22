@@ -1,4 +1,4 @@
-# Simple project for Python 3.10+
+# Simple project for Python 3.12+
 
 #### All-in-one repository with supervisor, crontab, linters and many useful tools
 

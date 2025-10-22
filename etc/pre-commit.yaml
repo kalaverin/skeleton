@@ -46,8 +46,12 @@ repos:
         name: ensure file ends with correct newline
       - id: trailing-whitespace
         name: strip trailing whitespace
-      # - id: pretty-format-json
-      #   name: pretty format json files
+      - id: pretty-format-json
+        name: pretty format json files
+        args:
+          - --autofix
+          - --no-ensure-ascii
+          - --no-sort-keys
       - id: requirements-txt-fixer
         name: fix requirements.txt files
       - id: double-quote-string-fixer
@@ -102,9 +106,9 @@ repos:
         name: remove CRLF line endings
       - id: remove-tabs
         name: remove tabs
-        exclude: (Makefile)$
+        exclude: ^(Makefile)$
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.20.0
+    rev: v3.21.0
     hooks:
       - id: pyupgrade
         name: upgrade python syntax
@@ -124,7 +128,7 @@ repos:
           - --line-length
           - '89'
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.0
+    rev: v0.14.1
     hooks:
       - id: ruff
         name: ruff
@@ -144,9 +148,7 @@ repos:
           - --config
           - etc/lint/.markdownlint-cli2.jsonc
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.8.24
+    rev: 0.9.5
     hooks:
       - id: uv-lock
-        name: check project dependencies are locked
-        args:
-          - --locked
+        name: sync pyproject.toml and lock project dependencies to uv.lock

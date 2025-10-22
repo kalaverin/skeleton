@@ -11,7 +11,7 @@ case "$1" in
         exec alembic upgrade head
         ;;
 
-    "start")
+    "run")
         exec python main.py
         ;;
 

@@ -33,8 +33,8 @@ WORKDIR $ROOT/
 COPY --chown=root:root \
     pyproject.toml uv.lock ./
 
-ARG UV_INDEX_USERNAME
-ARG UV_INDEX_PASSWORD
+ARG UV_INDEX_CUSTOM_USERNAME
+ARG UV_INDEX_CUSTOM_PASSWORD
 
 RUN \
     uv sync \
@@ -65,4 +65,4 @@ WORKDIR $ROOT
 
 ENV PYTHONUNBUFFERED=1
 ENTRYPOINT ["./main.sh"]
-CMD ["start"]
+CMD ["run"]
