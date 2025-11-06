@@ -1,3 +1,5 @@
+.PHONY: default help install
+
 help:
 	@just default
 

@@ -128,7 +128,7 @@ repos:
           - --line-length
           - '89'
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.1
+    rev: v0.14.3
     hooks:
       - id: ruff
         name: ruff
@@ -148,7 +148,7 @@ repos:
           - --config
           - etc/lint/.markdownlint-cli2.jsonc
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.9.5
+    rev: 0.9.7
     hooks:
       - id: uv-lock
         name: sync pyproject.toml and lock project dependencies to uv.lock

@@ -1,6 +1,7 @@
 *
 
 !app/
+!migrations/
 
 !.python-version
 !entrypoint.sh
