@@ -56,7 +56,9 @@ dependencies = [
   "orjson>=3.11.3",
   "pydantic>=2.12.3",
   "pydantic-settings>=2.11.0",
-  "structlog>=25.4.0"
+  "structlog>=25.4.0",
+  "supervisor>=4.3.0",
+  "yacron>=0.19.0",
 ]
 description = "Blank"
 name = "Blank"

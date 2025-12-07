@@ -2,7 +2,7 @@ set dotenv-load := true
 set positional-arguments := true
 
 DATETIME := `TZ=UTC date '+%Y-%m-%d %H:%M:%S'`
-STAGING := env('STAGING', 'crypto-2')
+STAGING := env('STAGING', 'example')
 DOCKER_TAG := env('DOCKER_TAG', 'unknown/default')
 BASE_IMAGE := env('BASE_IMAGE', 'python:3.12-slim-bookworm')
 
