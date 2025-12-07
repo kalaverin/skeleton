@@ -12,9 +12,7 @@ from structlog.stdlib import ProcessorFormatter
 if TYPE_CHECKING:
     from structlog.types import Processor
 
-OVERRIDE_LOGGERS = (
-    'sqlalchemy.engine.Engine.postgres',
-)
+OVERRIDE_LOGGERS = ('sqlalchemy.engine.Engine.postgres',)
 
 
 def setup(
@@ -72,7 +70,7 @@ def setup(
             ),
         )
 
-        def serializer(*args, **kw) -> str:  # noqa: ANN002,ANN003
+        def serializer(*args, **kw) -> str:  # type: ignore[no-untyped-def]
             return dumps(*args, **kw).decode('utf-8')
 
         renderer = JSONRenderer(serializer=serializer)  # type: ignore[assignment]
@@ -97,7 +95,7 @@ def setup(
 
     # and also override some loggers manually
 
-    for logger_name in OVERRIDE_LOGGERS:  # type: ignore[var-annotated]
+    for logger_name in OVERRIDE_LOGGERS:
         logger: logging.Logger = logging.getLogger(name=logger_name)
         logger.handlers.clear()
         logger.propagate = True
