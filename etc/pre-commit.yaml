@@ -126,7 +126,7 @@ repos:
         name: convert to use the walrus operator
         args:
           - --line-length
-          - '89'
+          - '79'
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.14.3
     hooks:

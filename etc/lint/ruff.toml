@@ -3,7 +3,7 @@ exclude = [
   ".git",
   "docs/etc.py"
 ]
-line-length = 89
+line-length = 79
 output-format = "full"
 target-version = "py312"
 
