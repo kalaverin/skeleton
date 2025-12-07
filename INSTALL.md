@@ -44,7 +44,7 @@ That's all, go to **Shell configuration** section.
 
 ## Shell integration
 
-1. **Mise provide dotenv functionality** (automatic read per-project environment variables from .env file and from .mise.toml config) from the box with batteries, but it required entry hook in your shell, add to your shell, example for zsh (your can replace it for bash, fish, etc):
+1. **Mise provide dotenv functionality** (automatic read per-project environment variables from .env file and from .mise.toml config) from the box with batteries, but it required entry hook in your shell. Add the following lines to your `~/.zshrc` file (or the corresponding file for your shell, e.g., `~/.bashrc` for bash):
     - `eval "$(mise activate zsh)"`
 
 2. Also you can want using autocompletion, same story for zsh:
@@ -52,6 +52,8 @@ That's all, go to **Shell configuration** section.
 
 3. Restart your shell session:
     - `exec "$SHELL"`
+
+4. Note: If you modify the `.env` file, `mise` will not automatically reload it. You need to leave and re-enter the project directory for the changes to be applied: `cd .. && cd -`.
 
 ## How to use the project?
 
