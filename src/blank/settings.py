@@ -65,7 +65,7 @@ def show_environment(config: Settings, regex: str | None = None) -> None:
     with suppress(Exception):
         path: Path = Path('packages.json').resolve()
         if path.is_file():
-            with path.open('r') as fd:
+            with path.open() as fd:
                 packages: list[str] = [
                     '{name}={version}'.format(**x)
                     for x in loads(fd.read().strip())

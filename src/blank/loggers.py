@@ -19,7 +19,7 @@ def setup(
     level: str,
     textual: bool,  # noqa: FBT001
 ) -> None:
-    timestamper: TimeStamper = TimeStamper(fmt='iso', utc=True)
+    timestamper: TimeStamper = TimeStamper(fmt='iso')
 
     shared_processors: list[Processor] = [
         structlog.contextvars.merge_contextvars,
