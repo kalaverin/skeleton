@@ -147,19 +147,26 @@ test:
 # upgrade dependencies graph
 [group('packaging')]
 upgrade:
-    @mise upgrade --quiet --yes
+    @echo "upgrading mise dependencies.."
+    @mise upgrade \
+        --quiet \
+        --yes \
 
+    @echo "updating pre-commit hooks.."
     @uv run --quiet \
     pre-commit autoupdate \
         --config etc/pre-commit.yaml
 
+    @echo "upgrading project (with development group) dependencies.."
     @uv sync \
         --refresh \
         --upgrade \
         --group development
 
+    @echo "locking updated dependencies.."
     @uv lock --upgrade
 
+    @echo "installed dependencies after upgrade:"
     @uv pip list
 
 # build docker image

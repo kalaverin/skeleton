@@ -108,7 +108,7 @@ repos:
         name: remove tabs
         exclude: (Makefile)$
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.21.0
+    rev: v3.21.2
     hooks:
       - id: pyupgrade
         name: upgrade python syntax
@@ -128,7 +128,7 @@ repos:
           - --line-length
           - '79'
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.3
+    rev: v0.14.8
     hooks:
       - id: ruff
         name: ruff
@@ -140,7 +140,7 @@ repos:
       - id: radon
         name: calculate code complexity
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.18.1
+    rev: v0.19.1
     hooks:
       - id: markdownlint-cli2
         name: check markdown files
@@ -148,7 +148,7 @@ repos:
           - --config
           - etc/lint/.markdownlint-cli2.jsonc
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.9.7
+    rev: 0.9.16
     hooks:
       - id: uv-lock
         name: sync pyproject.toml and lock project dependencies to uv.lock
