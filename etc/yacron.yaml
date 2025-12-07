@@ -1,3 +1,4 @@
+---
 # defaults:
 #     utc: false
 #     shell: /bin/bash
@@ -7,10 +8,10 @@
 #         value: /bin:/usr/bin
 
 jobs:
- - name: example
-   command: echo "done!"
-   schedule: "*/1 * * * *"
-   concurrencyPolicy: Forbid
+  - name: example
+    command: echo "done!"
+    schedule: '*/1 * * * *'
+    concurrencyPolicy: Forbid
 
    # enabled: false
    # captureStderr: true
@@ -22,7 +23,6 @@ jobs:
 
    # schedule:
    #   minute: "*/10"
-
 
    # onFailure:
    #   retry:

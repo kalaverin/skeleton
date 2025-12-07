@@ -106,7 +106,7 @@ repos:
         name: remove CRLF line endings
       - id: remove-tabs
         name: remove tabs
-        exclude: ^(Makefile)$
+        exclude: (Makefile)$
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.21.0
     hooks:
