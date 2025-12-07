@@ -1,46 +1,41 @@
 #!/usr/bin/env zsh
 
-function is_started {
-    if [ ! -x "$1" ]; then
-        echo " == fail ($0): directory not found: '$1'"
-        return 1
+local -i error=0 method=0
 
-    elif [ -f "$1/supervisord.pid" ]; then
-        pid="$(pgrep -F "$1/supervisord.pid")"
-        if [ -n "$pid" ] && [ "$pid" -gt 0 ] && [ -S "$1/supervisord.sock" ]; then
-            # echo " ++ warn ($0): supervisord($pid) started (from $1/supervisord.pid)" >&2
-            return 0
-        fi
-        return 2
-    fi
-    return 3
+source "${0:h}/supervisord.zsh"
+root="$(get_root "$0")" || return $?
+
+is_started "$root" || {
+    error=$?
+    print -u2 " == fail ($0): supervisord is not running ($error)"
+    return 1
 }
 
-builtin cd "$(dirname "$0")/../"
-if [ "$?" -eq 0 ]; then
+local -a control_args=(
+    supervisorctl
+    --configuration
+    "$root/etc/supervisord.conf"
+)
 
-    local RUN="$PWD/run"
-    if [ ! -d "$RUN" ] || [ ! -x "$RUN" ]; then
-        echo " == fail ($0): directory not found: '$RUN'"
-        return 1
+# determine start method
 
-    elif [ ! -x "$commands[uvx]" ]; then
-        echo " == fail ($0): uvx not found"
-        return 1
-    fi
+if [[ -x "$commands[supervisorctl]" ]]; then
 
-    if ! is_started "$RUN"; then
-        source "$(dirname "$0")/supervisord.zsh"
-    fi
+    $control_args[@] $@ || {
+        error=$?
+        print -u2 " == fail ($0): run command via supervisorctl failed ($error)"
+        return $error
+    }
 
-    if is_started "$RUN"; then
-        uvx \
-            --color always \
-            --no-progress \
-            --quiet \
-            --from supervisor \
-            supervisorctl \
-            --configuration "$PWD/etc/supervisord.conf" \
-                $*
-    fi
+elif [[ -x "$commands[uvx]" ]]; then
+
+    uvx $uv_args[@] $control_args[@] $@  || {
+        error=$?
+        print -u2 " == fail ($0): run command via uvx failed ($error)"
+        return $error
+    }
+
+else
+    print -u2 " == fail ($0): supervisorctl command not found"
+    return 1
 fi

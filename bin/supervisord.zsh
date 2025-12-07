@@ -1,57 +1,223 @@
 #!/usr/bin/env zsh
 
-function is_started {
-    if [ ! -x "$1" ]; then
-        echo " == fail ($0): directory not found: '$1'"
-        return 1
+local -Ax Error=(
+    [Ok]=0
+    [Generic]=1
+    [NotProject]=2
+    [NotRunning]=3
+    [StartFailed]=4
+    [UnknownMethod]=5
+)
 
-    elif [ -f "$1/supervisord.pid" ]; then
-        pid="$(pgrep -F "$1/supervisord.pid")"
-        if [ -n "$pid" ] && [ "$pid" -gt 0 ] && [ -S "$1/supervisord.sock" ]; then
-            # echo " ++ warn ($0): supervisord($pid) started (from $1/supervisord.pid)" >&2
-            return 0
-        fi
-        return 2
-    fi
-    return 3
+local -Ax Method=(
+    [Unknown]=0
+    [VirtualEnv]=1
+    [AstralUv]=2
+    [SystemWide]=3
+)
+
+
+function get_root {
+    local dir
+
+    (( $# )) || {
+        print -u2 " == fail ($0): missing argument: <this-file-path>"
+        return $Error[Generic]
+    }
+
+    # abosulufy, then head one -> etc/, head two -> ../
+
+    dir="${1:A:h:h}" || return $?
+
+    [[ -d "$dir/run" && -x "$dir/run" && -f "$dir/etc/$name.conf" ]] || {
+        print -u2 " == fail ($0): not a project root: '$dir'"
+        return $Error[NoProject]
+    }
+
+    printf '%s' "$dir"
+    return $Error[Ok]
 }
 
-builtin cd "$(dirname "$0")/../" || return "$?"
 
-# check if supervisord is already running
+function load_environment {
+    local dir
 
-local RUN="$PWD/run"
-if [ ! -x "$RUN" ]; then
-    echo " == fail ($0): directory not found: '$RUN'"
-    return 1
+    (( $# )) || {
+        print -u2 " == fail ($0): missing argument: <project-root-dir>"
+        return $Error[Generic]
+    }
+    dir="${1:A}" || return $?
 
-elif [ ! -x "$commands[uvx]" ]; then
-    echo " == fail ($0): uvx not found"
-    return 1
+    if [[ -x "$commands[direnv]" && -f "$dir/.envrc" ]]; then
+        print -u2 " -- info ($0): use direnv environment from '$dir/.envrc'"
+        eval "$(direnv export zsh)" || return $?
+    fi
+
+    if [[ -x "$commands[mise]" && -f "$dir/.mise.toml" ]]; then
+        print -u2 " -- info ($0): use mise environment from '$dir/.mise.toml'"
+        eval "$(mise activate)" || return $?
+    fi
+
+    return $Error[Ok]
+}
+
+
+function is_started {
+    local dir
+    local -i pid
+
+    (( $# )) || {
+        print -u2 " == fail ($0): missing argument: <project-root-dir>"
+        return $Error[Generic]
+    }
+    dir="${1:A}" || return $?
+
+
+    [[ -f "$dir/run/$name.pid" ]] || {
+        return $Error[NotRunning]
+    }
+
+    pid="$(pgrep -F "$dir/run/$name.pid")"
+
+    [[ -n "$pid" && "$pid" -gt 0 && -S "$dir/run/$name.sock" ]] || {
+        return $Error[NotRunning]
+    }
+
+    return $Error[Ok]
+}
+
+
+function get_start_method {
+    # first, if we are in virtualenv, use it
+
+    if [[ -n "$VIRTUAL_ENV" && -x "$VIRTUAL_ENV/bin/$name" ]]; then
+        print -u2 " -- info ($0): use supervisord from $VIRTUAL_ENV"
+        return $Method[VirtualEnv]
+
+    # then, try to start via uvx
+
+    elif (( $+commands[uvx] )); then
+        print -u2 " -- info ($0): use supervisord via $commands[uvx]"
+        return $Method[AstralUv]
+
+    # otherwise, try to start directly
+
+    elif (( $+commands[supervisord] )); then
+        print -u2 " -- info ($0): use system-wide $commands[supervisord]"
+        return $Method[SystemWide]
+    fi
+
+    return $Method[Unknown]
+}
+
+# main logic
+
+local root
+local -i error=0 method=0
+local -r name="supervisord"
+
+local -a uv_args=(
+    --no-progress
+    --quiet
+    --color always
+    --from supervisor
+)
+
+root="$(get_root "$0")" || return $?
+
+local -a supervisord_args=(
+    --silent
+    --configuration
+    "$root/etc/$name.conf"
+)
+
+is_started "$root"; error=$?
+
+if (( error == Error[Ok] )); then
+    # already running
+    return $error
+
+elif (( error != Error[NotRunning] )); then
+    # any unexpected error
+    print -u2 " == fail ($0): unexpected error: $error"
+    return $error
 fi
-is_started "$RUN" && return 0
 
-# evaluate local .env when exists before supervisord
+# supervisord is not running, let start it!
 
-if [ -f "$PWD/.env" ] && [ -x "$commands[mise]" ]; then
-    eval "$(mise activate)"
-elif [ -f "$PWD/.envrc" ] && [ -x "$commands[direnv]" ]; then
-    eval "$(direnv export zsh)"
+# switch to project root
+
+builtin cd "$root" || return "$?"
+
+# load environment
+
+load_environment "$root" || return $?
+
+# ensure log dirs exist
+
+if [[ ! -d "$root/log/errors" ]]; then
+    print -u2 " -- info ($0): create errors log dir in '$root/log/errors'"
+
+    mkdir -p "$root/log/errors" || {
+        print -u2 " == fail ($0): cannot create errors log dir"
+        return $?
+    }
 fi
 
-# start supervisord and check if it is started successfully
+# determine start method
 
-uvx \
-    --color always \
-    --no-progress \
-    --quiet \
-    --from supervisor \
-    supervisord \
-        --silent \
-        --configuration "$PWD/etc/supervisord.conf" && \
-echo " -- info ($0): supervisord starting up, wait.." && \
-sleep 0.5 && \
-is_started "$RUN" && return 0
+get_start_method; method=$?
 
-echo " == fail ($0): supervisord start failed" >&2
-return 1
+(( method )) || {
+    print -u2 " == fail ($0): cannot determine start method in '$root'"
+    return $Error[UnknownMethod]
+}
+
+# report active virtualenv if any
+
+if (( $+VIRTUAL_ENV )); then
+    print -u2 " -- info ($0): active virtualenv: $VIRTUAL_ENV"
+fi
+
+# start supervisord according to determined method
+
+if (( method == Method[VirtualEnv] )); then
+
+    $VIRTUAL_ENV/bin/$name $supervisord_args[@] || {
+        error=$?
+        print -u2 " == fail ($0): start in virtualenv failed ($error)" >&2
+        return $error
+    }
+
+elif (( method == Method[AstralUv] )); then
+
+    uvx $uv_args[@] $name $supervisord_args[@] || {
+        error=$?
+        print -u2 " == fail ($0): start via uvx failed ($error)"
+        return $error
+    }
+
+elif (( method == Method[SystemWide] )); then
+
+    supervisord $supervisord_args[@] || {
+        error=$?
+        print -u2 " == fail ($0): direct start failed ($error)"
+        return $error
+    }
+
+else
+    print -u2 " == fail ($0): unknown start method: $method"
+    return $Error[UnknownMethod]
+fi
+
+# wait a bit and check is started
+
+print -u2 " -- info ($0): supervisord starting up, wait.." && \
+    sleep 1.0 && \
+    is_started "$root"
+
+error=$?
+(( error )) && {
+    print -u2 " == fail ($0): supervisord start failed ($error)"
+    return $error
+}
