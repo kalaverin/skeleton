@@ -18,5 +18,7 @@ python.compile = false
 python.uv_venv_auto = true
 
 [tools]
-just = "latest"
+go = "latest"
 uv = "latest"
+just = "latest"
+"go:github.com/direnv/direnv/v2" = "latest"
