@@ -19,6 +19,6 @@ python.uv_venv_auto = true
 
 [tools]
 go = "latest"
-"go:github.com/direnv/direnv/v2" = "latest"
+"go:github.com/direnv/direnv" = "master"
 just = "latest"
 uv = "latest"
