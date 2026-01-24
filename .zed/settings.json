@@ -14,22 +14,6 @@
       ],
       "format_on_save": "off"
     },
-    "JSON": {
-      "tab_size": 2
-    },
-    "JSONC": {
-      "tab_size": 2
-    },
-    "TOML": {
-      "tab_size": 2
-    },
-    "YAML": {
-      "tab_size": 2
-    },
-    "Make": {
-      "hard_tabs": true,
-      "tab_size": 2
-    }
   },
   "lsp": {
     "basedpyright": {

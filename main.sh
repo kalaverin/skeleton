@@ -12,7 +12,7 @@ case "$1" in
         ;;
 
     "run")
-        exec python main.py
+        exec python app/main.py
         ;;
 
     "idle")

@@ -1,41 +1,46 @@
 from contextlib import suppress
 from pathlib import Path
 from re import search
-from typing import Any
+from typing import Any, ClassVar, final
 
 from orjson import loads
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from structlog import get_logger
 
-from Blank import glossary, loggers
+from Blank import glossary
 
 logger = get_logger(__name__)
 
 KEY = 'BLANK'
 
 
-class Database(BaseSettings):
-    model_config: SettingsConfigDict = SettingsConfigDict(  # type: ignore[misc]
-        env_prefix=f'{KEY}_DB_',
+class BaseConfig(BaseSettings):
+    model_config: ClassVar[SettingsConfigDict] = SettingsConfigDict(
+        env_prefix=f'{KEY}_',
     )
-    dsn: str = ''
 
+
+@final
+class Database(BaseConfig):
+    model_config = SettingsConfigDict(env_prefix=f'{KEY}_DB_')
+
+    dsn: str = ''
     echo: bool = False
     pool_size: int = 5
 
 
+@final
 class Logging(BaseSettings):
-    model_config: SettingsConfigDict = SettingsConfigDict(  # type: ignore[misc]
-        env_prefix=f'{KEY}_LOG_',
-    )
+    model_config = SettingsConfigDict(env_prefix=f'{KEY}_LOG_')
 
     level: str = 'info'
     textual: bool = False
 
 
+@final
 class Settings(BaseSettings):
-    model_config: SettingsConfigDict = SettingsConfigDict(  # type: ignore[misc]
+    model_config = SettingsConfigDict(
         env_file='.env',
         env_prefix=f'{KEY}_',
         validate_assignment=True,
@@ -51,7 +56,6 @@ class Settings(BaseSettings):
     debug: bool = False
 
     # sections
-
     db: Database = Field(default_factory=Database)
     log: Logging = Field(default_factory=Logging)
 
@@ -84,13 +88,3 @@ def show_environment(config: Settings, regex: str | None = None) -> None:
 
         else:
             log.info(glossary.Service.UsedVariables, variables=model)
-
-
-config: Settings = Settings()
-
-loggers.setup(
-    level=config.log.level,
-    textual=config.log.textual and config.debug,
-)
-
-show_environment(config)

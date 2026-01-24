@@ -182,12 +182,12 @@ dock:
 # production method of running the application
 [group('project')]
 run:
-    @uv run --quiet main.py
+    @uv run --quiet app/main.py
 
 # development method of running the application
 [group('project')]
 develop:
-    @CLIENTS_LOG_TEXTUAL=true uv run main.py
+    @uv run app/main.py
 
 # forward ports from remote environment using kubefwd; don't forgot run `gcloud auth login`
 [group('project')]

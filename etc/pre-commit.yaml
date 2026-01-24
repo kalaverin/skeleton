@@ -69,7 +69,7 @@ repos:
       - id: forbid-bidi-controls
         name: forbid bidirectional control characters
   - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
-    rev: v2.15.0
+    rev: v2.16.0
     hooks:
       - id: pretty-format-ini
         name: pretty format ini files
@@ -100,7 +100,7 @@ repos:
       - id: python-check-blanket-type-ignore
         name: avoid blanket type ignore
   - repo: https://github.com/Lucas-C/pre-commit-hooks
-    rev: v1.5.5
+    rev: v1.5.6
     hooks:
       - id: remove-crlf
         name: remove CRLF line endings
@@ -128,7 +128,7 @@ repos:
           - --line-length
           - '79'
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.8
+    rev: v0.14.14
     hooks:
       - id: ruff
         name: ruff
@@ -140,7 +140,7 @@ repos:
       - id: radon
         name: calculate code complexity
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.19.1
+    rev: v0.20.0
     hooks:
       - id: markdownlint-cli2
         name: check markdown files
@@ -148,7 +148,7 @@ repos:
           - --config
           - etc/lint/.markdownlint-cli2.jsonc
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.9.16
+    rev: 0.9.26
     hooks:
       - id: uv-lock
         name: sync pyproject.toml and lock project dependencies to uv.lock
