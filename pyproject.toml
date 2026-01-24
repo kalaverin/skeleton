@@ -119,7 +119,7 @@ local-project = ["Blank"]
 "tests/*" = []
 
 [tool.setuptools]
-packages = []
+packages = ["Blank"]
 
 [tool.setuptools.package-dir]
 "" = "src"
