@@ -21,3 +21,5 @@ run/*.sock
 !.gitlab-ci.yml
 !.mise.toml
 !.python-version
+
+!etc/lint/.markdownlint-cli2.jsonc
