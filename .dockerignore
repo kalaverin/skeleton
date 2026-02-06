@@ -4,6 +4,7 @@
 !migrations/
 
 !.python-version
+!alembic.ini
 !entrypoint.sh
 !pyproject.toml
 !uv.lock

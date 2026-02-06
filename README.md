@@ -32,7 +32,7 @@
 
 #### Project have many directories
 
-- `app/` or `src/` application or module sources root
+- `src/` module with optional `app/` application
 - `etc/` linter and checker configurations, pre-commit, etc
 - `migrations/` database alembic migrations
 - `tests/` it's tests
@@ -50,4 +50,4 @@
 - `justfile` project development workflow scenarios
 
 - `pyproject.toml` main project configuration file
-- `uv.lock` main project dependencies graph state lockfile
+- `uv.lock` main project dependencies graph state lockfile (**do not edit manually! do not forgot to unignore from git!**)

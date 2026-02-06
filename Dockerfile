@@ -1,5 +1,5 @@
-ARG BASE_IMAGE=python:3.12-slim-bookworm
-FROM ${BASE_IMAGE}
+ARG BLANK_BASE_IMAGE=python:3.12-slim-bookworm
+FROM ${BLANK_BASE_IMAGE}
 
 # prepare application environment
 
@@ -33,8 +33,8 @@ WORKDIR $ROOT/
 COPY --chown=root:root \
     pyproject.toml uv.lock ./
 
-ARG UV_INDEX_CUSTOM_USERNAME
-ARG UV_INDEX_CUSTOM_PASSWORD
+ARG UV_INDEX_PRIVATE_USERNAME
+ARG UV_INDEX_PRIVATE_PASSWORD
 
 RUN \
     uv sync \
@@ -49,10 +49,13 @@ RUN \
 # copy project sources
 
 COPY --chown=root:root \
-    entrypoint.sh main.py ./
+    entrypoint.sh ./
 
 COPY --chown=root:root \
     app/ $ROOT/app/
+
+COPY --chown=root:root \
+    src/ $ROOT/src/
 
 # store installed packages list
 
@@ -64,5 +67,5 @@ USER $USER
 WORKDIR $ROOT
 
 ENV PYTHONUNBUFFERED=1
-ENTRYPOINT ["./main.sh"]
+ENTRYPOINT ["./entrypoint.sh"]
 CMD ["run"]

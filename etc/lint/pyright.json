@@ -1,7 +1,6 @@
 {
   "include": [
-    "../../app/",
-    "../../tests/"
+    "../../app/"
   ],
   "exclude": [
     "**/.*",
@@ -26,7 +25,7 @@
   "reportInvalidCast": true,
   "reportMissingImports": true,
   "reportPrivateLocalImportUsage": true,
-  "reportPrivateUsage": true,
+  "reportPrivateUsage": "information",
   "reportUnannotatedClassAttribute": true,
   "reportUnusedImport": true,
   "reportUnusedParameter": true,

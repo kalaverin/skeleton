@@ -1,6 +1,6 @@
 from structlog import get_logger
 
-from Blank import glossary, loggers
+from Blank import assets, loggers
 from Blank.settings import Settings, show_environment
 
 
@@ -17,7 +17,7 @@ if __name__ == '__main__':
 
     logger = get_logger(__name__)
     logger.info(
-        glossary.Service.Started,
+        assets.Service.Started,
         app=config.name,
         version=config.version,
         port=config.port,

@@ -1,101 +1,130 @@
-import logging
+import logging.config
 import sys
+from collections.abc import Iterable
 from functools import partial
-from typing import TYPE_CHECKING, TextIO
+from logging import StreamHandler, getLevelName, getLogger, root
+from typing import Any, TextIO
 
 import orjson
 import structlog
 from structlog.dev import ConsoleRenderer
-from structlog.processors import JSONRenderer, TimeStamper
-from structlog.stdlib import ProcessorFormatter
+from structlog.processors import (
+    CallsiteParameter,
+    CallsiteParameterAdder,
+    JSONRenderer,
+    StackInfoRenderer,
+    TimeStamper,
+    UnicodeDecoder,
+    format_exc_info,
+)
+from structlog.stdlib import (
+    ExtraAdder,
+    LoggerFactory,
+    PositionalArgumentsFormatter,
+    ProcessorFormatter,
+    add_log_level,
+    add_logger_name,
+)
+from structlog.types import Processor
 
-if TYPE_CHECKING:
-    from structlog.types import Processor
+# options for orjson, we want to sort keys, serialize dataclasses, numpy and
+# uuid objects, and use naive UTC datetimes
 
-OVERRIDE_LOGGERS = ('sqlalchemy.engine.Engine.postgres',)
+DEFAULT_JSON_OPTIONS: int = (
+    orjson.OPT_SORT_KEYS |
+    orjson.OPT_NAIVE_UTC |
+    orjson.OPT_SERIALIZE_DATACLASS |
+    orjson.OPT_SERIALIZE_NUMPY |
+    orjson.OPT_SERIALIZE_UUID
+)
+
+# processors that will be called for each log entry, before the renderer
+
+DEFAULT_PROCESSORS: tuple[Processor, ...] = (
+    structlog.contextvars.merge_contextvars,
+    add_logger_name,
+    add_log_level,
+    TimeStamper(fmt='iso'),
+    PositionalArgumentsFormatter(),
+    ExtraAdder(),
+    StackInfoRenderer(),
+    UnicodeDecoder(),
+    CallsiteParameterAdder(
+        parameters=[
+            CallsiteParameter.FILENAME,
+            CallsiteParameter.FUNC_NAME,
+            CallsiteParameter.LINENO,
+        ],
+    ),
+)
+
+
+def nothing_to_do(*_: Any, **__: Any) -> None: ...
 
 
 def setup(
-    level: str,
-    textual: bool,  # noqa: FBT001
+    level: int | str = 'info',
+    textual: bool = False,
+    serializer_options: int = DEFAULT_JSON_OPTIONS,
+    processors: Iterable[Processor] = DEFAULT_PROCESSORS,
 ) -> None:
-    timestamper: TimeStamper = TimeStamper(fmt='iso')
+    # logging level can be passed as integer
 
-    shared_processors: list[Processor] = [
-        structlog.contextvars.merge_contextvars,
-        structlog.stdlib.add_logger_name,
-        structlog.stdlib.add_log_level,
-        timestamper,
-        structlog.stdlib.PositionalArgumentsFormatter(),
-        structlog.stdlib.ExtraAdder(),
-        structlog.processors.StackInfoRenderer(),
-        structlog.processors.UnicodeDecoder(),
-        structlog.processors.CallsiteParameterAdder(
-            parameters=[
-                structlog.processors.CallsiteParameter.FILENAME,
-                structlog.processors.CallsiteParameter.FUNC_NAME,
-                structlog.processors.CallsiteParameter.LINENO,
-            ],
-        ),
-    ]
+    if isinstance(level, int):
+        level = getLevelName(level)
 
-    # in development we see native tracebacks (with better-exceptions too),
-    # but in production we want them in the logs
+    # in development we look for native tracebacks (with better-exceptions too)
+    # but in production we want json in the logs
+
+    order: list[Processor] = list(processors)
+
+    # in production we want to serialize exception info as part of the json
 
     if not textual:
-        shared_processors.append(structlog.processors.format_exc_info)
+        order.append(format_exc_info)
 
     # main configuration
 
     structlog.configure(
-        processors=[
-            *shared_processors,
-            ProcessorFormatter.wrap_for_formatter,
-        ],
-        logger_factory=structlog.stdlib.LoggerFactory(),
+        processors=[*order, ProcessorFormatter.wrap_for_formatter],
+        logger_factory=LoggerFactory(),
         cache_logger_on_first_use=True,
     )
+
+    # make renderer, json in production, colored console in development
 
     if textual:
         renderer = ConsoleRenderer(colors=True)
 
     else:
-        dumps = partial(
-            orjson.dumps,
-            option=(
-                orjson.OPT_SORT_KEYS
-                | orjson.OPT_NAIVE_UTC
-                | orjson.OPT_SERIALIZE_DATACLASS
-                | orjson.OPT_SERIALIZE_UUID
-            ),
-        )
+        # for better performance, we use orjson to serialize log entries
 
-        def serializer(*args, **kw) -> str:  # type: ignore[no-untyped-def]
+        dumps = partial(orjson.dumps, option=serializer_options)
+
+        def serializer(*args: Any, **kw: Any) -> str:
             return dumps(*args, **kw).decode('utf-8')
 
-        renderer = JSONRenderer(serializer=serializer)  # type: ignore[assignment]
+        renderer = JSONRenderer(serializer=serializer)
+
+    # formatter for handler, it will call all processors before render
 
     formatter: ProcessorFormatter = ProcessorFormatter(
-        foreign_pre_chain=shared_processors,
-        processors=[
-            ProcessorFormatter.remove_processors_meta,
-            renderer,
-        ],
+        foreign_pre_chain=order,
+        processors=[ProcessorFormatter.remove_processors_meta, renderer],
     )
 
-    handler: logging.StreamHandler[TextIO] = logging.StreamHandler(sys.stdout)
+    # override all loggers to use our handler and formatter
+
+    handler: StreamHandler[TextIO] = StreamHandler(sys.stdout)
     handler.setFormatter(fmt=formatter)
 
-    # here we reconfigure the root logger
+    for logger in (getLogger(), *map(getLogger, root.manager.loggerDict)):
 
-    root_logger: logging.Logger = logging.getLogger()
-    root_logger.handlers.clear()
-    root_logger.addHandler(hdlr=handler)
-    root_logger.setLevel(level=level.upper())
-
-    # and also override some loggers manually
-
-    for logger_name in OVERRIDE_LOGGERS:
-        logger: logging.Logger = logging.getLogger(name=logger_name)
         logger.handlers.clear()
-        logger.propagate = True
+        logger.addHandler(handler)
+        logger.setLevel(level.upper())
+        logger.propagate = False
+
+    # disable logging config dictConfig
+
+    logging.config.dictConfig = nothing_to_do

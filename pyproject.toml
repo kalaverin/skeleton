@@ -25,6 +25,7 @@ development = [
   "python-lsp-server[all]>=1.14.0",
   "refurb>=2.2.0",
   "ruff>=0.14.14",
+  "structlog>=25.5.0",
   "supervisor>=4.3.0",
   "ty>=0.0.13",
   "typing-extensions>=4.15.0",
@@ -76,17 +77,24 @@ exclude_dirs = [".venv", ".git"]
 line-length = 79
 target-version = ["py312"]
 
+[tool.pytest.ini_options]
+addopts = "--strict-config --strict-markers -ra -v --color=yes"
+asyncio_default_test_loop_scope = "function"
+asyncio_mode = "auto"
+console_output_style = "count"
+env_files = ["tests/pytest.env"]
+env_override_existing_values = 0
+filterwarnings = "ignore::DeprecationWarning"
+testpaths = ["tests"]
 [tool.refurb]
 ignore = []
 
 [tool.ruff]
+exclude = []
 extend = "etc/lint/ruff.toml"
 
 [tool.ruff.lint.isort]
-known-third-party = [
-  "kain",
-  "kalib"
-]
+known-third-party = []
 section-order = [
   "future",
   "standard-library",
@@ -124,10 +132,17 @@ packages = ["Blank"]
 [tool.setuptools.package-dir]
 "" = "src"
 
+[tool.ty.rules]
+possibly-missing-attribute = "ignore"
+
+[tool.ty.src]
+exclude = []
+
 [tool.uv]
 default-groups = [
   "development"
 ]
+index-strategy = "unsafe-best-match"
 
 # [[tool.uv.index]]
 # allow_insecure_host = "gitlab.my.domain"

@@ -148,7 +148,7 @@ repos:
           - --config
           - etc/lint/.markdownlint-cli2.jsonc
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.9.26
+    rev: 0.9.27
     hooks:
       - id: uv-lock
         name: sync pyproject.toml and lock project dependencies to uv.lock

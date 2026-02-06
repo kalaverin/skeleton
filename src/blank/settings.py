@@ -8,7 +8,7 @@ from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from structlog import get_logger
 
-from Blank import glossary
+from Blank import assets
 
 logger = get_logger(__name__)
 
@@ -74,7 +74,7 @@ def show_environment(config: Settings, regex: str | None = None) -> None:
                     '{name}={version}'.format(**x)
                     for x in loads(fd.read().strip())
                 ]
-                log.info(glossary.Service.UsedLibraries, versions=packages)
+                log.info(assets.Service.UsedLibraries, versions=packages)
 
     if config.debug:
         model: dict[str, Any] = config.model_dump()
@@ -84,7 +84,7 @@ def show_environment(config: Settings, regex: str | None = None) -> None:
                 for k, v in model.items()
                 if search(pattern=regex, string=k)
             }
-            log.info(glossary.Service.UsedVariables, variables=data)
+            log.info(assets.Service.UsedVariables, variables=data)
 
         else:
-            log.info(glossary.Service.UsedVariables, variables=model)
+            log.info(assets.Service.UsedVariables, variables=model)
