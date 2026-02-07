@@ -50,32 +50,35 @@ That's all, go to **Shell configuration** section.
 2. Also you can want using autocompletion, same story for zsh:
     - `eval "$(mise completion zsh && uv generate-shell-completion zsh)"`
 
-3. Restart your shell session:
-    - `exec "$SHELL"`
+3. If you use direnv for more complex environment management, you can also add the following line to your `~/.zshrc` file:
+    - `eval "$(mise activate direnv)"`
 
-4. Note: If you modify the `.env` file, `mise` will not automatically reload it. You need to leave and re-enter the project directory for the changes to be applied: `cd .. && cd -`.
+4. Restart your shell session:
+    - `exec zsh`
+
+5. Note: If you modify the `.envrc` file, `direnv` will not automatically reload it. You need to leave and re-enter the project directory for the changes to be applied: `cd .. && cd -`.
 
 ## How to use the project?
 
 ### Project contribution in action
 
-1. Authenticate with Google Cloud, because we work with services deployed in kubernetes cluster:
+1. (if applicable) Authenticate with Google Cloud, because we work with services deployed in kubernetes cluster:
     - `gcloud auth login --update-adc`
 
-2. Go to project root, install environment by `make install`, put your settings (gitlab token, zitadel secret, used staging environment, etc) to .env file and rerun `make install` till you have succeeded setup).
+2. Go to project root, install environment by `make install`, put your settings (gitlab token, other secrets, used staging environment, etc) to .env file and rerun `make install` till you have succeeded setup).
 
 3. Run port-forwarding from cluster services to your machine:
 
     - `make ports`
-    - this command will start _kubefwd_ and forward ports from all services defined in _justfile_ to your local ports (really!), you can change it, but by default it will forward temporal, zitadel, utils services and entire scope from _STAGING_ environment variable (by default it's crypto-2), you can change in your .env file
-    - sudo required by used `kubefwd` for temporary hostnames aliasing in /etc/hosts, read attached _justfile_
+    - this command will start **kubefwd** and forward ports from all services defined in **justfile** to your local ports (really!), you can change it, but by default it will forward temporal, zitadel, utils services and entire scope from **BLANK_STAGING** environment variable (by default it's crypto-2), you can change in your .env file
+    - sudo required by used `kubefwd` for temporary hostnames aliasing in /etc/hosts, read attached **justfile** for details
 
 4. That's all, run the application in development mode (with reloading and debug headers):
     - `make develop`
 
 5. If you need fine-grained development control, just read your .env file.
 
-6. Also uv everytime install by default local environment with _development_ dependencies group which include simple [better-exceptions](https://github.com/qix-/better-exceptions) library. This library enabled by default for development (and do not included to production packaging, sic!), but you can simple turn it off by _BETTER_EXCEPTIONS_ environment variable setted to 0 in your .env.
+6. Also uv everytime install by default local environment with _development_ dependencies group which include simple [better-exceptions](https://github.com/qix-/better-exceptions) library. This library enabled by default for development (and do not included to production packaging, sic!), but you can simple turn it off by **BETTER_EXCEPTIONS** environment variable setted to 0 in your .env.
 
 ## Work with project dependencies
 
@@ -83,10 +86,10 @@ That's all, go to **Shell configuration** section.
 
 **NEVER CALL pip, NEVER!** Instead it use native uv calls, [read uv manual](https://docs.astral.sh/uv/guides/projects/#managing-dependencies), it's very easy, for example:
 
-1. Set or change python version (when python 3.11 already installed), before run do not forget change your python version in pyproject.toml:
-    - `uv python pin 3.11 && uv sync`
+1. Set or change python version, before run do not forget change your python version in pyproject.toml:
+    - `uv python pin 3.13 && uv sync`
 
-2. If python 3.11 isn't installed, run `mise install python@3.11` and mise download and install python 3.11, recreate virtual environment with 3.11 context. Do not forget to pin python version by uv from previous step (and, may be you need to update your pyproject.toml).
+2. If python 3.13 isn't installed, run `mise install python@3.13` and mise download and install python 3.13, recreate virtual environment with 3.13 context. Do not forget to pin python version by uv from previous step to **.mise.toml**(and, may be you need to update your **pyproject.toml**).
 
 3. Just add new dependency:
     - `uv add phpbb<=1.2`
@@ -104,7 +107,7 @@ When you need to restore your environment after any experiments, just run `make 
 
 ### Project workflow commands
 
-(read _justfile_ for details)
+(read **justfile** for details)
 
 1. Your main command is `make help`, feel free to run it, it will show you all available commands and their descriptions.
 
@@ -113,7 +116,7 @@ When you need to restore your environment after any experiments, just run `make 
     - if you run this in project first time, all packaging command failed because we need to install internal corporate packages; don't worry, it's easy, just open for edit .env file and put to UV_INDEX_PRIVATE_PASSWORD your gitlab deployment (read only) token and rerun `make install`
 
 3. `make ports`:
-    - start kubefwd and forward ports from all services defined in _justfile_ to yout local machine with reacheble and human-readable hostnames
+    - start kubefwd and forward ports from all services defined in **justfile** to yout local machine with reacheble and human-readable hostnames
 
 4. `make develop`:
     - run development server with application
@@ -128,7 +131,7 @@ When you need to restore your environment after any experiments, just run `make 
     - runs all compatible linters and checkers, but without --fix and --edit mode, just check your code for errors and warnings, will be stop at first fail, completely safe operation
 
 8. `make pre-commit`:
-    - run all compatible linters and checkers (make lint + make check + pre-commit hooks) with --fix and --edit mode, be careful, it can change your code, so always commit all changes before run it! (and do not forget to add all changes after run it, because some files can be unstaged after this command)
+    - run all compatible linters and checkers (make lint + make check + pre-commit hooks) with --fix and --edit mode, be careful, it can change your code, so always commit all changes before run it! (and do not forget to add all changes after run it, because some files can be unstaged after this command); use it for manual run all checks
 
 9. `make dock`:
     - builds production ready docker image prepared for publishing
