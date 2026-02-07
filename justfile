@@ -142,6 +142,13 @@ test:
         --cov src \
         --cov-report term-missing
 
+# clean bytecode and cache files, also useful to reset state of linters and type checkers
+[group('maintenance')]
+clean:
+    @rm -rf .*_cache/
+    @find . -type d -name "__pycache__" -exec rm -rf {} +
+    @find . -type f -name "*.pyc" -exec rm -f {} +
+
 # upgrade dependencies graph
 [group('packaging')]
 upgrade:
