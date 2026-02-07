@@ -4,6 +4,7 @@ _.python.venv = {path = ".venv", create = true}
 [hooks]
 # enter = ["uv sync --all-extras"]
 postinstall = [
+  "direnv allow .",
   "cp -n .env.sample .env",
   "uv venv --clear",
   "uv sync --refresh",
