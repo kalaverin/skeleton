@@ -88,7 +88,7 @@ parametrize-values-type = "tuple"
 
 [lint.flake8-quotes]
 docstring-quotes = "double"
-inline-quotes = "single"
+inline-quotes = "double"
 multiline-quotes = "double"
 
 [lint.isort]

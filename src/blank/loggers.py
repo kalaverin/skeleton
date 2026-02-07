@@ -31,11 +31,11 @@ from structlog.types import Processor
 # uuid objects, and use naive UTC datetimes
 
 DEFAULT_JSON_OPTIONS: int = (
-    orjson.OPT_SORT_KEYS |
-    orjson.OPT_NAIVE_UTC |
-    orjson.OPT_SERIALIZE_DATACLASS |
-    orjson.OPT_SERIALIZE_NUMPY |
-    orjson.OPT_SERIALIZE_UUID
+    orjson.OPT_SORT_KEYS
+    | orjson.OPT_NAIVE_UTC
+    | orjson.OPT_SERIALIZE_DATACLASS
+    | orjson.OPT_SERIALIZE_NUMPY
+    | orjson.OPT_SERIALIZE_UUID
 )
 
 # processors that will be called for each log entry, before the renderer
@@ -44,7 +44,7 @@ DEFAULT_PROCESSORS: tuple[Processor, ...] = (
     structlog.contextvars.merge_contextvars,
     add_logger_name,
     add_log_level,
-    TimeStamper(fmt='iso'),
+    TimeStamper(fmt="iso"),
     PositionalArgumentsFormatter(),
     ExtraAdder(),
     StackInfoRenderer(),
@@ -63,7 +63,7 @@ def nothing_to_do(*_: Any, **__: Any) -> None: ...
 
 
 def setup(
-    level: int | str = 'info',
+    level: int | str = "info",
     textual: bool = False,
     serializer_options: int = DEFAULT_JSON_OPTIONS,
     processors: Iterable[Processor] = DEFAULT_PROCESSORS,
@@ -93,6 +93,8 @@ def setup(
 
     # make renderer, json in production, colored console in development
 
+    renderer: ConsoleRenderer | JSONRenderer
+
     if textual:
         renderer = ConsoleRenderer(colors=True)
 
@@ -102,7 +104,7 @@ def setup(
         dumps = partial(orjson.dumps, option=serializer_options)
 
         def serializer(*args: Any, **kw: Any) -> str:
-            return dumps(*args, **kw).decode('utf-8')
+            return dumps(*args, **kw).decode("utf-8")
 
         renderer = JSONRenderer(serializer=serializer)
 

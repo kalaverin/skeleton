@@ -28,7 +28,7 @@
   "reportPrivateUsage": "information",
   "reportUnannotatedClassAttribute": true,
   "reportUnusedImport": true,
-  "reportUnusedParameter": true,
+  "reportUnusedParameter": "information",
   "reportUnreachable": true,
   "reportUnusedVariable": true,
   "reportIncompatibleVariableOverride": "information",

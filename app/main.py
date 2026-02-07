@@ -3,8 +3,7 @@ from structlog import get_logger
 from Blank import assets, loggers
 from Blank.settings import Settings, show_environment
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     config: Settings = Settings()
 
     loggers.setup(

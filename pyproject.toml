@@ -86,6 +86,7 @@ env_files = ["tests/pytest.env"]
 env_override_existing_values = 0
 filterwarnings = "ignore::DeprecationWarning"
 testpaths = ["tests"]
+
 [tool.refurb]
 ignore = []
 
@@ -119,10 +120,10 @@ local-project = ["Blank"]
   "INP001",  # File `docs/conf.py` is part of an implicit namespace package. Add an `__init__.py`.
   "I001"  # [*] Import block is un-sorted or un-formatted
 ]
-"src/*" = []
-"src/blank/loggers.py" = [
-  "ANN002",  # Missing type annotation for `*args`
-  "ANN003"  # Missing type annotation for `**kw
+"src/*" = [
+  "ANN401",  # Dynamically typed expressions (typing.Any) are disallowed in `**__`
+  "FBT001",  # Boolean-typed positional argument in function definition
+  "FBT002"  # Boolean default positional argument in function definition
 ]
 "tests/*" = []
 

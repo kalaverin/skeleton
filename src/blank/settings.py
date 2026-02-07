@@ -1,7 +1,7 @@
 from contextlib import suppress
 from pathlib import Path
 from re import search
-from typing import Any, ClassVar, final
+from typing import Any, ClassVar
 
 from orjson import loads
 from pydantic import Field
@@ -12,44 +12,45 @@ from Blank import assets
 
 logger = get_logger(__name__)
 
-KEY = 'BLANK'
+KEY = "BLANK"
 
 
 class BaseConfig(BaseSettings):
     model_config: ClassVar[SettingsConfigDict] = SettingsConfigDict(
-        env_prefix=f'{KEY}_',
+        env_prefix=f"{KEY}_",
     )
 
 
-@final
 class Database(BaseConfig):
-    model_config = SettingsConfigDict(env_prefix=f'{KEY}_DB_')
+    model_config: ClassVar[SettingsConfigDict] = SettingsConfigDict(
+        env_prefix=f"{KEY}_DB_",
+    )
 
-    dsn: str = ''
+    dsn: str = ""
     echo: bool = False
     pool_size: int = 5
 
 
-@final
 class Logging(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix=f'{KEY}_LOG_')
+    model_config: ClassVar[SettingsConfigDict] = SettingsConfigDict(
+        env_prefix=f"{KEY}_LOG_",
+    )
 
-    level: str = 'info'
+    level: str = "info"
     textual: bool = False
 
 
-@final
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(
-        env_file='.env',
-        env_prefix=f'{KEY}_',
+    model_config: ClassVar[SettingsConfigDict] = SettingsConfigDict(
+        env_file=".env",
+        env_prefix=f"{KEY}_",
         validate_assignment=True,
-        extra='ignore',
+        extra="ignore",
     )
 
     # predefined service name and version
-    version: str = '0.0.0'
-    name: str = 'Blank'
+    version: str = "0.0.0"
+    name: str = "Blank"
 
     # service configuration
     port: int = 8000
@@ -67,11 +68,11 @@ def show_environment(config: Settings, regex: str | None = None) -> None:
     )
 
     with suppress(Exception):
-        path: Path = Path('packages.json').resolve()
+        path: Path = Path("packages.json").resolve()
         if path.is_file():
             with path.open() as fd:
                 packages: list[str] = [
-                    '{name}={version}'.format(**x)
+                    "{name}={version}".format(**x)
                     for x in loads(fd.read().strip())
                 ]
                 log.info(assets.Service.UsedLibraries, versions=packages)

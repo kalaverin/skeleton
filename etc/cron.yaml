@@ -13,8 +13,8 @@ jobs:
     schedule: '*/1 * * * *'
     concurrencyPolicy: Forbid
 
-   # enabled: false
-   # captureStderr: true
+    enabled: false
+    captureStderr: true
 
    # command: |
    #   echo "hello" 1>&2
