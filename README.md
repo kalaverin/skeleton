@@ -10,7 +10,7 @@
 
 ### Kickstart or how to run?
 
-(after you have installed `mise`, read below for details, read [INSTALL.md](./INSTALL.md) for details how to install and configure required tools)
+(after you have installed `mise`, read below for details, read [INSTALL.md](./docs/project/INSTALL.md) for details how to install and configure required tools)
 
 1. Go to project root.
 2. Copy .env.sample to .env, add your personal settings, tokens, passwords, etc
