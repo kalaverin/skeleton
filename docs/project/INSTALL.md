@@ -70,7 +70,7 @@ That's all, go to **Shell configuration** section.
 3. Run port-forwarding from cluster services to your machine:
 
     - `make ports`
-    - this command will start **kubefwd** and forward ports from all services defined in **justfile** to your local ports (really!), you can change it, but by default it will forward temporal, zitadel, utils services and entire scope from **BLANK_STAGING** environment variable (by default it's crypto-2), you can change in your .env file
+    - this command will start **kubefwd** and forward ports from all services defined in **justfile** to your local ports (really!), you can change it, but by default it will forward temporal, zitadel, utils services and entire scope from **BLANK_STAGING** environment variable (by default it's **example**), you can change in your .env file
     - sudo required by used `kubefwd` for temporary hostnames aliasing in /etc/hosts, read attached **justfile** for details
 
 4. That's all, run the application in development mode (with reloading and debug headers):
