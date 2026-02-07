@@ -3,7 +3,7 @@ set positional-arguments := true
 
 DATETIME := `TZ=UTC date '+%Y-%m-%d %H:%M:%S'`
 BLANK_STAGING := env('BLANK_STAGING', 'example')
-BLANK_DOCKER_TAG := env('BLANK_DOCKER_TAG', 'Blank/default')
+BLANK_DOCKER_TAG := env('BLANK_DOCKER_TAG', 'blank/default')
 BLANK_BASE_IMAGE := env('BLANK_BASE_IMAGE', 'python:3.12-slim-bookworm')
 
 UV_INDEX_PRIVATE_USERNAME := env('UV_INDEX_PRIVATE_USERNAME', '__token__')

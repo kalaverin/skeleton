@@ -61,8 +61,8 @@ dependencies = [
   "pydantic-settings>=2.12.0",
   "structlog>=25.4.0"
 ]
-description = "Blank"
-name = "Blank"
+description = "Project 'Blank'"
+name = "blank"
 readme = "README.md"
 requires-python = ">=3.12,<3.14"
 version = "0.0.0"
@@ -106,7 +106,7 @@ section-order = [
 ]
 
 [tool.ruff.lint.isort.sections]
-local-project = ["Blank"]
+local-project = ["blank"]
 
 [tool.ruff.lint.per-file-ignores]
 "contrib/*" = []
@@ -128,7 +128,7 @@ local-project = ["Blank"]
 "tests/*" = []
 
 [tool.setuptools]
-packages = ["Blank"]
+packages = ["blank"]
 
 [tool.setuptools.package-dir]
 "" = "src"

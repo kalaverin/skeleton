@@ -8,7 +8,7 @@ from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from structlog import get_logger
 
-from Blank import assets
+from blank import assets
 
 logger = get_logger(__name__)
 

@@ -1,7 +1,7 @@
 from structlog import get_logger
 
-from Blank import assets, loggers
-from Blank.settings import Settings, show_environment
+from blank import assets, loggers
+from blank.settings import Settings, show_environment
 
 if __name__ == "__main__":
     config: Settings = Settings()

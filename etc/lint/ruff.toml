@@ -93,7 +93,7 @@ multiline-quotes = "double"
 
 [lint.isort]
 force-to-top = []  # used for override special importers in tests/
-known-first-party = ["Blank"]
+known-first-party = ["blank"]
 relative-imports-order = "closest-to-furthest"
 section-order = [
   "future",
