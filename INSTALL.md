@@ -110,7 +110,7 @@ When you need to restore your environment after any experiments, just run `make 
 
 2. `make install`:
 
-    - if you run this in project first time, all packaging command failed because we need to install internal corporate packages; don't worry, it's easy, just open for edit .env file and put to _UV_INDEX_MYEXLAB_PASSWORD_ your gitlab deployment (read only) token and rerun `make install`
+    - if you run this in project first time, all packaging command failed because we need to install internal corporate packages; don't worry, it's easy, just open for edit .env file and put to UV_INDEX_PRIVATE_PASSWORD your gitlab deployment (read only) token and rerun `make install`
 
 3. `make ports`:
     - start kubefwd and forward ports from all services defined in _justfile_ to yout local machine with reacheble and human-readable hostnames
@@ -127,16 +127,19 @@ When you need to restore your environment after any experiments, just run `make 
 7. `make check`:
     - runs all compatible linters and checkers, but without --fix and --edit mode, just check your code for errors and warnings, will be stop at first fail, completely safe operation
 
-8. `make dock`:
+8. `make pre-commit`:
+    - run all compatible linters and checkers (make lint + make check + pre-commit hooks) with --fix and --edit mode, be careful, it can change your code, so always commit all changes before run it! (and do not forget to add all changes after run it, because some files can be unstaged after this command)
+
+9. `make dock`:
     - builds production ready docker image prepared for publishing
 
-9. `uv sync`
+10. `uv sync`
     - read project dependencies graph from pyproject.toml and install it to virtual environment
 
-10. `uv lock`:
+11. `uv lock`:
     - dump dependencies graph state to uv.lock and lock dependecies
 
-11. `make upgrade`:
+12. `make upgrade`:
     - read project dependencies graph from pyproject.toml
     - fetch information about all updated packages, recreate dependencies graph and install it to virtual environment by `uv sync --upgrade`
     - update `uv.lock` with updated packages version by `uv lock --upgrade`
