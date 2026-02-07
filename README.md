@@ -4,9 +4,9 @@
 
 ## Overview
 
-**Version control** is handled using [Astral UV](https://docs.astral.sh/uv/getting-started/installation/#standalone-installer) tool. When building the image, uv is sourced from the official repository by copying the binary. Installation on a developer's machine can be done in various ways, which we'll cover shortly.
-
 **Managing the interpreter version project tools**, project environment variables, and setting up the virtual environment is done with the [Mise](https://mise.jdx.dev/installing-mise.html) tool. It install any interpreter version by reading it from the project description and/or the version bound by uv, it also run the appropriate uv & just binary for user platform and architecture.
+
+**Python interpreter version control** is handled using [Astral UV](https://docs.astral.sh/uv/getting-started/installation/#standalone-installer) tool. When building the image, uv is sourced from the official repository by copying the binary. Installation on a developer's machine can be done in various ways, which we'll cover shortly.
 
 ### Kickstart or how to run?
 
@@ -33,21 +33,35 @@
 #### Project have many directories
 
 - `src/` module with optional `app/` application
+- `bin/` scripts, supervisors, cronjobs, etc
+- `contrib/` contributions, e.g., development docker files, kubernetes manifests,
+- `docs/` project documentation, e.g., architecture, design decisions, etc
 - `etc/` linter and checker configurations, pre-commit, etc
+- `log/` logs, but it's git-ignored, of course
 - `migrations/` database alembic migrations
+- `run/` runtime files, e.g., pid files, sockets, etc
 - `tests/` it's tests
 
 #### ..and files
 
+##### dotfiles
+
 - `.env` git-ignored for local development, autoexpanded to current sheel environment by tooling; feel free to use it
 - `.mise.toml` mise config, contains all used development tooling and maintain python installations
+- `.envrc` direnv config, if you want to use it, but it's optional, because mise provide dotenv functionality from the box, but you can use direnv for more complex scenarios
+
+##### markdown project manuals
 
 - `README.md` this file
 - `INSTALL.md` how to install and configure required tools
+
+##### other files
 
 - `Dockerfile` per se docker file
 - `Makefile` back compatible fallback to make utility, but it's just a wrapper for justfile
 - `justfile` project development workflow scenarios
 
+- `alembic.ini` alembic configuration file for database migrations
+- `entrypoint.sh` entrypoint for docker image
 - `pyproject.toml` main project configuration file
 - `uv.lock` main project dependencies graph state lockfile (**do not edit manually! do not forgot to unignore from git!**)

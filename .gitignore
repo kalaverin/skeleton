@@ -17,6 +17,7 @@ run/*.sock
 !.dockerignore
 !.env.sample
 !.envrc
+!.gitattributes
 !.gitignore
 !.gitlab-ci.yml
 !.mise.toml
