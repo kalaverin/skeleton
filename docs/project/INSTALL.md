@@ -44,7 +44,7 @@ That's all, go to **Shell configuration** section.
 
 ## Shell integration
 
-1. **Mise provide dotenv functionality** (automatic read per-project environment variables from .env file and from .mise.toml config) from the box with batteries, but it required entry hook in your shell. Add the following lines to your `~/.zshrc` file (or the corresponding file for your shell, e.g., `~/.bashrc` for bash):
+1. **Mise provide dotenv functionality** (automatic read per-project environment variables from .env file and from mise.toml config) from the box with batteries, but it required entry hook in your shell. Add the following lines to your `~/.zshrc` file (or the corresponding file for your shell, e.g., `~/.bashrc` for bash):
     - `eval "$(mise activate zsh)"`
 
 2. Also you can want using autocompletion, same story for zsh:
@@ -89,7 +89,7 @@ That's all, go to **Shell configuration** section.
 1. Set or change python version, before run do not forget change your python version in pyproject.toml:
     - `uv python pin 3.13 && uv sync`
 
-2. If python 3.13 isn't installed, run `mise install python@3.13` and mise download and install python 3.13, recreate virtual environment with 3.13 context. Do not forget to pin python version by uv from previous step to **.mise.toml**(and, may be you need to update your **pyproject.toml**).
+2. If python 3.13 isn't installed, run `mise install python@3.13` and mise download and install python 3.13, recreate virtual environment with 3.13 context. Do not forget to pin python version by uv from previous step to **mise.toml**(and, may be you need to update your **pyproject.toml**).
 
 3. Just add new dependency:
     - `uv add phpbb<=1.2`

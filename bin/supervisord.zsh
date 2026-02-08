@@ -53,8 +53,8 @@ function load_environment {
         eval "$(direnv export zsh)" || return $?
     fi
 
-    if [[ -x "$commands[mise]" && -f "$dir/.mise.toml" ]]; then
-        print -u2 " -- info ($0): use mise environment from '$dir/.mise.toml'"
+    if [[ -x "$commands[mise]" && -f "$dir/mise.toml" ]]; then
+        print -u2 " -- info ($0): use mise environment from '$dir/mise.toml'"
         eval "$(mise activate)" || return $?
     fi
 

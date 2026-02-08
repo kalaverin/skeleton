@@ -47,7 +47,6 @@
 ##### dotfiles
 
 - `.env` git-ignored for local development, autoexpanded to current sheel environment by tooling; feel free to use it
-- `.mise.toml` mise config, contains all used development tooling and maintain python installations
 - `.envrc` direnv config, if you want to use it, but it's optional, because mise provide dotenv functionality from the box, but you can use direnv for more complex scenarios
 
 ##### markdown project manuals
@@ -63,5 +62,6 @@
 
 - `alembic.ini` alembic configuration file for database migrations
 - `entrypoint.sh` entrypoint for docker image
+- `mise.toml` mise config, contains all used development tooling and maintain python installations
 - `pyproject.toml` main project configuration file
 - `uv.lock` main project dependencies graph state lockfile (**do not edit manually! do not forgot to unignore from git!**)

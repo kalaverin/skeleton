@@ -4,7 +4,7 @@ help:
 	@just default
 
 install:
-	@mise trust --yes .mise.toml
+	@mise trust --yes mise.toml
 	@mise install
 
 %:

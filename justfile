@@ -15,7 +15,7 @@ default:
 # (re)create clean and full-featured development environment from scratch with all required tools and packages
 [group('environment')]
 install:
-    @mise trust --yes .mise.toml
+    @mise trust --yes mise.toml
     @mise install
 
 # run pre-commit hooks on all files, include lint, check ant pre-commit hooks
