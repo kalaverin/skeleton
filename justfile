@@ -26,7 +26,7 @@ pre-commit: (_development_packages)
         --config etc/pre-commit.yaml \
         --all
 
-# in-place autoformat sourcetree, destructive (!), after all also run `check`
+# in-place autoformat sourcetree, destructive (!)
 [group('maintenance')]
 lint: (_development_packages)
     @echo "check dependencies state is actual and locked.."

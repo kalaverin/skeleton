@@ -9,6 +9,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from structlog import get_logger
 
 from blank import assets
+from blank.loggers import setup
+from blank.version import __version__
 
 logger = get_logger(__name__)
 
@@ -31,7 +33,7 @@ class Database(BaseConfig):
     pool_size: int = 5
 
 
-class Logging(BaseSettings):
+class Logging(BaseConfig):
     model_config: ClassVar[SettingsConfigDict] = SettingsConfigDict(
         env_prefix=f"{KEY}_LOG_",
     )
@@ -40,16 +42,17 @@ class Logging(BaseSettings):
     textual: bool = False
 
 
-class Settings(BaseSettings):
+class Settings(BaseConfig):
     model_config: ClassVar[SettingsConfigDict] = SettingsConfigDict(
         env_file=".env",
         env_prefix=f"{KEY}_",
         validate_assignment=True,
+        validate_default=True,
         extra="ignore",
     )
 
     # predefined service name and version
-    version: str = "0.0.0"
+    version: str = __version__
     name: str = "Blank"
 
     # service configuration
@@ -89,3 +92,13 @@ def show_environment(config: Settings, regex: str | None = None) -> None:
 
         else:
             log.info(assets.Service.UsedVariables, variables=model)
+
+
+config: Settings = Settings()
+
+setup(
+    level=config.log.level,
+    textual=config.log.textual and config.debug,
+)
+
+show_environment(config)

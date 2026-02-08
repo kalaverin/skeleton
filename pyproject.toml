@@ -59,6 +59,7 @@ dependencies = [
   "orjson>=3.11.5",
   "pydantic>=2.12.5",
   "pydantic-settings>=2.12.0",
+  "sentry-sdk>=2.51.0",
   "structlog>=25.4.0"
 ]
 description = "Project 'Blank'"
@@ -76,6 +77,20 @@ exclude_dirs = [".venv", ".git"]
 [tool.black]
 line-length = 79
 target-version = ["py312"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "pragma: no cover",
+  "if __name__ == .__main__.:",
+  "^\\s+\\.{3}"
+]
+show_missing = true
+
+[tool.coverage.run]
+branch = true
+
+[tool.pylint.messages_control]
+enable = "all"
 
 [tool.pytest.ini_options]
 addopts = "--strict-config --strict-markers -ra -v --color=yes"
@@ -140,6 +155,7 @@ possibly-missing-attribute = "ignore"
 exclude = []
 
 [tool.uv]
+# allow-insecure-host = ["gitlab.my.domain"]
 default-groups = [
   "development"
 ]

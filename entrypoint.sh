@@ -20,12 +20,12 @@ case "$1" in
         ;;
 
     "")
-        echo "nothing to do"
+        echo "No run parameter passed please use one of: [shell, migrate, run, idle]"
         exit 1
         ;;
 
     *)
-        echo "nothing to do"
+        echo "Unknown command '$1'. Please use one of: [shell, migrate, run, idle]"
         exit 1
         ;;
 esac
